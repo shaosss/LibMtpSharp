@@ -1,0 +1,13 @@
+#VS & Rider
+.vs
+.idea
+#bins and obj
+[Bb]in
+[Oo]bj
+#userFiles
+*.user
+
+#mtpzBuild
+buildLibmtp/input
+buildLibmtp/output
+lib
