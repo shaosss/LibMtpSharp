@@ -8,6 +8,6 @@
 *.user
 
 #mtpzBuild
-buildLibmtp/input
-buildLibmtp/output
-lib
+lib/**/input
+lib/**/output
+lib/packages

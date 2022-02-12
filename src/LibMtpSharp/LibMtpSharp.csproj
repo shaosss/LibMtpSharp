@@ -5,6 +5,12 @@
         <RootNamespace>LibMtpSharp</RootNamespace>
         <LangVersion>default</LangVersion>
         <PackageVersion>0.1.0</PackageVersion>
+        <Authors>Alexandr Shevchenko</Authors>
+        <Description>The wrapper of LibMtp library. Don't forget to add package with native dependencies</Description>
+        <Copyright>Copyright ©2022 Alexandr Shevchenko</Copyright>
+        <PackageProjectUrl>https://github.com/shao-sss/libMtpSharp</PackageProjectUrl>
+        <PackageTags>MTP MTPZ</PackageTags>
+        <PackageReleaseNotes>Initial release</PackageReleaseNotes>
     </PropertyGroup>
 
     <ItemGroup>
