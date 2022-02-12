@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibMtpSharp.Common", "src\LibMtpSharp.Common\LibMtpSharp.Common.csproj", "{3A8556C5-FF01-4105-9FFA-254F5AD30609}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibMtpSharp", "src\LibMtpSharp\LibMtpSharp.csproj", "{3A8556C5-FF01-4105-9FFA-254F5AD30609}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
