@@ -21,23 +21,23 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Content Include="../output/usr/x86_64-linux-gnu/lib/libcharset.so">
+        <Content Include="../output/lib/libcharset.so">
             <PackagePath>runtimes/linux-x64/native/</PackagePath>
             <Pack>true</Pack>
         </Content>
-        <Content Include="../output/usr/x86_64-linux-gnu/lib/libgcrypt.so">
+        <Content Include="../output/lib/libgcrypt.so">
             <PackagePath>runtimes/linux-x64/native/</PackagePath>
             <Pack>true</Pack>
         </Content>
-        <Content Include="../output/usr/x86_64-linux-gnu/lib/libgpg-error.so">
+        <Content Include="../output/lib/libgpg-error.so">
             <PackagePath>runtimes/linux-x64/native/</PackagePath>
             <Pack>true</Pack>
         </Content>
-        <Content Include="../output/usr/x86_64-linux-gnu/lib/libiconv.so">
+        <Content Include="../output/lib/libiconv.so">
             <PackagePath>runtimes/linux-x64/native/</PackagePath>
             <Pack>true</Pack>
         </Content>
-        <Content Include="../output/usr/x86_64-linux-gnu/lib/libusb-1.0.so">
+        <Content Include="../output/lib/libusb-1.0.so">
             <PackagePath>runtimes/linux-x64/native/</PackagePath>
             <Pack>true</Pack>
         </Content>

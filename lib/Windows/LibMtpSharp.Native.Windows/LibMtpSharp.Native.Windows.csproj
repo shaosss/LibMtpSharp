@@ -21,14 +21,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Content Include="../output/usr/x86_64-w64-mingw32/bin/libmtp-9.dll">
+        <Content Include="../output/bin/libmtp-9.dll">
             <PackagePath>runtimes/win-x64/native/</PackagePath>
             <Pack>true</Pack>
         </Content>
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\..\..\src\LibMtpSharp\LibMtpSharp.csproj" />
     </ItemGroup>
 
 </Project>

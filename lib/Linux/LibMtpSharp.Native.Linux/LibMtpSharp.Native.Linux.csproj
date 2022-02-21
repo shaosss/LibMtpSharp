@@ -20,14 +20,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Content Include="../output/usr/x86_64-linux-gnu/lib/libmtp.so">
+        <Content Include="../output/lib/libmtp.so">
             <PackagePath>runtimes/linux-x64/native/</PackagePath>
             <Pack>true</Pack>
         </Content>
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\..\..\src\LibMtpSharp\LibMtpSharp.csproj" />
     </ItemGroup>
 
 </Project>

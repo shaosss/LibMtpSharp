@@ -21,23 +21,23 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Content Include="../output/usr/x86_64-w64-mingw32/bin/libcharset-1.dll">
+        <Content Include="../output/bin/libcharset-1.dll">
             <PackagePath>runtimes/win-x64/native/</PackagePath>
             <Pack>true</Pack>
         </Content>
-        <Content Include="../output/usr/x86_64-w64-mingw32/bin/libgcrypt-20.dll">
+        <Content Include="../output/bin/libgcrypt-20.dll">
             <PackagePath>runtimes/win-x64/native/</PackagePath>
             <Pack>true</Pack>
         </Content>
-        <Content Include="../output/usr/x86_64-w64-mingw32/bin/libgpg-error6-0.dll">
+        <Content Include="../output/bin/libgpg-error6-0.dll">
             <PackagePath>runtimes/win-x64/native/</PackagePath>
             <Pack>true</Pack>
         </Content>
-        <Content Include="../output/usr/x86_64-w64-mingw32/bin/libiconv-2.dll">
+        <Content Include="../output/bin/libiconv-2.dll">
             <PackagePath>runtimes/win-x64/native/</PackagePath>
             <Pack>true</Pack>
         </Content>
-        <Content Include="../output/usr/x86_64-w64-mingw32/bin/libusb-1.0.dll">
+        <Content Include="../output/bin/libusb-1.0.dll">
             <PackagePath>runtimes/win-x64/native/</PackagePath>
             <Pack>true</Pack>
         </Content>

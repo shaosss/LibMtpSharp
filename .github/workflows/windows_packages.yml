@@ -1,4 +1,4 @@
-name: Windows build
+name: Windows native packages build
 
 on:
   workflow_call:
@@ -11,7 +11,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build native libraries
-      run: sh ./lib/Windows/buildLibmtp.sh
+      run: sh ./../buildNativeLibs.sh $GITHUB_WORKSPACE/lib $GITHUB_WORKSPACE/lib/Windows/output
+      working-directory: $GITHUB_WORKSPACE/lib/Windows/input
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
