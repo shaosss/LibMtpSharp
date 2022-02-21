@@ -10,9 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: Make input folder
+      run: mkdir lib/Windows/input
     - name: Build native libraries
       run: sh ./../buildNativeLibs.sh ${GITHUB_WORKSPACE}/lib ${GITHUB_WORKSPACE}/lib/Windows/output
-      working-directory: ${GITHUB_WORKSPACE}/lib/Windows/input
+      working-directory: lib/Windows/input
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
