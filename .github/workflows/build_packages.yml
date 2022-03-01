@@ -42,4 +42,41 @@ jobs:
         path: ./lib/packages/
     - name: Run test
       run: dotnet run ./test/LibMtpSharp.Native.Test.Windows/LibMtpSharp.Native.Test.Windows.csproj
-    
+  build_package_linux:
+    name: Build linux nuget packages
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Make input folder
+      run: mkdir lib/Linux/input
+    - name: Build native libraries
+      run: sh ./../buildNativeLibs.sh ${GITHUB_WORKSPACE}/lib ${GITHUB_WORKSPACE}/lib/Linux/output
+      working-directory: lib/Linux/input
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+    - name: Build
+      run: dotnet build ./lib/Linux/LibMtpSharp.Native.Linux.WithDependencies/LibMtpSharp.Native.Linux.WithDependencies.csproj
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v2.3.1
+      with:
+        name: linux_packages
+        path: ./lib/packages/LibMtpSharp.Native.Linux.*.nupkg
+  test_package_linux:
+    name: Test linux nuget packages
+    runs-on: ubuntu-latest
+    needs: build_package_linux
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+    - name: Download linux packages
+      uses: actions/download-artifact@v2
+      with:
+        name: linux_packages
+        path: ./lib/packages/
+    - name: Run test
+      run: dotnet run ./test/LibMtpSharp.Native.Test.Linux/LibMtpSharp.Native.Test.Linux.csproj
