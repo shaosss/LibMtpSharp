@@ -41,7 +41,7 @@ jobs:
         name: windows_packages
         path: ./lib/packages/
     - name: Run test
-      run: dotnet run ./test/LibMtpSharp.Native.Test.Windows/LibMtpSharp.Native.Test.Windows.csproj
+      run: dotnet run --project ./test/LibMtpSharp.Native.Test.Windows/LibMtpSharp.Native.Test.Windows.csproj
   build_package_linux:
     name: Build linux nuget packages
     runs-on: ubuntu-latest
@@ -79,4 +79,4 @@ jobs:
         name: linux_packages
         path: ./lib/packages/
     - name: Run test
-      run: dotnet run ./test/LibMtpSharp.Native.Test.Linux/LibMtpSharp.Native.Test.Linux.csproj
+      run: dotnet run --project ./test/LibMtpSharp.Native.Test.Linux/LibMtpSharp.Native.Test.Linux.csproj
