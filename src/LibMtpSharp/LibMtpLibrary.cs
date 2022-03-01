@@ -9,7 +9,7 @@ namespace LibMtpSharp
     /// </summary>
     internal partial class LibMtpLibrary
     {
-        private const string LibMtpName = "libmtp-9";
+        private const string LibMtpName = "libmtp";
 
         [DllImport(LibMtpName)]
         private static extern void LIBMTP_Init();
