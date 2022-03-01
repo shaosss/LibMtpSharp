@@ -22,7 +22,7 @@
 
     <ItemGroup>
         <Content Include="../output/bin/libmtp-9.dll">
-            <PackagePath>runtimes/win-x64/native/</PackagePath>
+            <PackagePath>runtimes/win-x64/native/libmtp.dll</PackagePath>
             <Pack>true</Pack>
         </Content>
     </ItemGroup>
