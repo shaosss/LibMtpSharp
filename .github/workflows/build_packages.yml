@@ -1,12 +1,11 @@
-name: Windows native packages build
+name: Package build
 
 on:
-  workflow_call:
   workflow_dispatch:
 
 jobs:
-  build_package:
-    name: Build nuget package
+  build_package_windows:
+    name: Build windows nuget packages
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -26,3 +25,21 @@ jobs:
       with:
         name: windows_packages
         path: ./lib/packages/LibMtpSharp.Native.Windows.*.nupkg
+  test_package_windows:
+    name: Test windows nuget packages
+    runs-on: windows-latest
+    needs: build_package_windows
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+    - name: Download windows packages
+      uses: actions/download-artifact@v2
+      with:
+        name: windows_packages
+        path: ./lib/packages/
+    - name: Run test
+      run: dotnet run ./test/LibMtpSharp.Native.Test.Windows/LibMtpSharp.Native.Test.Windows.csproj
+    
