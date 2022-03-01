@@ -13,7 +13,12 @@
 
     <ItemGroup>
       <PackageReference Include="LibMtpSharp.Native.Linux.WithDependencies" Version="1.1.20-alpha" />
-      <PackageReference Include="LibMtpSharp.Native.Windows.WithDependencies" Version="1.1.20-alpha" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Include="..\Program.cs">
+        <Link>Program.cs</Link>
+      </Compile>
     </ItemGroup>
 
 </Project>
