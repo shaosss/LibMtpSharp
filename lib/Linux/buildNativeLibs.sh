@@ -1,5 +1,4 @@
 sudo apt-get update
-sudo apt-get upgrade
 
 sudo apt-get install pkg-config autoconf libtool libudev-dev make gettext git -y
 

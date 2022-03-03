@@ -1,5 +1,4 @@
 brew update
-brew upgrade
 
 brew install pkg-config autoconf libtool libudev-dev make gettext git -y
 
