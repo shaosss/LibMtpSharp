@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <IncludeContentInPack>true</IncludeContentInPack>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <NoWarn>$(NoWarn);NU5128</NoWarn>
+        <PackageVersion>1.1.20-alpha</PackageVersion>
+        <Title>LibMtpSharp.Native.MacOS.WithDependencies</Title>
+        <Authors>Alexandr Shevchenko</Authors>
+        <Description>The native dependencies of LibMtp library for LibMtpSharp build for MacOS</Description>
+        <Copyright>Copyright ©2022 Alexandr Shevchenko</Copyright>
+        <PackageProjectUrl>https://github.com/shao-sss/libMtpSharp</PackageProjectUrl>
+        <PackageTags>MTP MTPZ</PackageTags>
+        <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    </PropertyGroup>
+    
+    <PropertyGroup>
+      <OutputPath>..\..\packages\</OutputPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Content Include="../output/lib/libcharset.dylib">
+            <PackagePath>runtimes/osx/native/</PackagePath>
+            <Pack>true</Pack>
+        </Content>
+        <Content Include="../output/lib/libgcrypt.dylib">
+            <PackagePath>runtimes/osx/native/</PackagePath>
+            <Pack>true</Pack>
+        </Content>
+        <Content Include="../output/lib/libgpg-error.dylib">
+            <PackagePath>runtimes/osx/native/</PackagePath>
+            <Pack>true</Pack>
+        </Content>
+        <Content Include="../output/lib/libiconv.dylib">
+            <PackagePath>runtimes/osx/native/</PackagePath>
+            <Pack>true</Pack>
+        </Content>
+        <Content Include="../output/lib/libusb-1.0.dylib">
+            <PackagePath>runtimes/osx/native/</PackagePath>
+            <Pack>true</Pack>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\LibMtpSharp.Native.Linux\LibMtpSharp.Native.Linux.csproj" />
+    </ItemGroup>
+
+</Project>
