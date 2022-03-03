@@ -1,6 +1,6 @@
 brew update
 
-brew install pkg-config autoconf libtool libudev-dev make gettext git -y
+brew install pkg-config autoconf libtool libudev-dev make gettext git
 
 sh $1/buildLibUsb.sh x86_64-apple-darwin $2
 sh $1/buildLibgpg-error.sh x86_64-apple-darwin $2
