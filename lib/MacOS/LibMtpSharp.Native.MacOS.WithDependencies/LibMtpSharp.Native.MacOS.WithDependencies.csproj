@@ -44,7 +44,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\LibMtpSharp.Native.Linux\LibMtpSharp.Native.Linux.csproj" />
+      <ProjectReference Include="..\LibMtpSharp.Native.MacOS\LibMtpSharp.Native.MacOS.csproj" />
     </ItemGroup>
 
 </Project>
