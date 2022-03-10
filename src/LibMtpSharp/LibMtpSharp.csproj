@@ -14,6 +14,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <None Remove=".mtpz-data" />
+      <EmbeddedResource Update="MTPZ.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>MTPZ.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="MTPZ.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>MTPZ.resx</DependentUpon>
+      </Compile>
     </ItemGroup>
 </Project>
