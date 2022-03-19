@@ -4,8 +4,9 @@ using System.IO;
 using System.Runtime.InteropServices;
 using LibMtpSharp.Enums;
 using LibMtpSharp.Exceptions;
+using LibMtpSharp.Lists;
+using LibMtpSharp.NativeAPI;
 using LibMtpSharp.Structs;
-using Zunc.LibMtp.Exceptions;
 
 namespace LibMtpSharp
 {
@@ -64,9 +65,7 @@ namespace LibMtpSharp
             using (var fileTypeList = new SupportedTypesList(_mptDeviceStructPointer))
             {
                 foreach (var fileType in fileTypeList)
-                {
                     yield return fileType;
-                }
             }
         }
 
@@ -99,29 +98,41 @@ namespace LibMtpSharp
             }
         }
         
-        public FileAndFolderList GetFolderContent(uint storageId, uint folderId)
+        public IEnumerable<FileStruct> GetFolderContent(uint storageId, uint folderId)
         {
-            return new(_mptDeviceStructPointer, storageId, folderId);
+            using (var fileList = new FileAndFolderList(_mptDeviceStructPointer, storageId, folderId))
+            {
+                foreach (var file in fileList)
+                    yield return file;
+            }
         }
 
-        public AlbumList GetAlbumList()
+        public IEnumerable<AlbumStruct> GetAlbumList()
         {
-            return new(_mptDeviceStructPointer);
+            using (var albumList = new AlbumList(_mptDeviceStructPointer))
+            {
+                foreach (var album in albumList)
+                    yield return new AlbumStruct(album);
+            }
         }
         
-        public TrackList GetTrackList()
+        public IEnumerable<TrackStruct> GetTrackList()
         {
-            return new(_mptDeviceStructPointer);
+            using (var trackList = new TrackList(_mptDeviceStructPointer))
+            {
+                foreach (var track in trackList)
+                    yield return track;
+            }
         }
 
-        public FileSampleDataPtrHolder GetFileSampleDataForObject(uint objectId)
+        public FileSampleDataStruct GetFileSampleDataForObject(uint objectId)
         {
-            return new FileSampleDataPtrHolder(_mptDeviceStructPointer, objectId);
+            return new FileSampleDataStruct(_mptDeviceStructPointer, objectId);
         }
 
-        public void SendRepresentativeDataForObject(uint objectId, ref FileSampleDataStruct dataStruct)
+        public void SendRepresentativeDataForObject(uint objectId, ref FileSampleDataStruct dataStructStruct)
         {
-            LibMtpLibrary.SendRepresentativeSample(_mptDeviceStructPointer, objectId, ref dataStruct);
+            dataStructStruct.SendDataToDevice(_mptDeviceStructPointer, objectId);
         }
 
         private void ReleaseUnmanagedResources()
@@ -151,12 +162,12 @@ namespace LibMtpSharp
 
         public void CreateAlbum(ref AlbumStruct albumStruct)
         {
-            LibMtpLibrary.CreateNewAlbum(_mptDeviceStructPointer, ref albumStruct);
+            albumStruct.SendAlbum(_mptDeviceStructPointer, true);
         }
         
         public void UpdateAlbum(ref AlbumStruct albumStruct)
         {
-            LibMtpLibrary.UpdateAlbum(_mptDeviceStructPointer, ref albumStruct);
+            albumStruct.SendAlbum(_mptDeviceStructPointer, false);
         }
 
         public uint CreateFolder(string name, uint parentFolderId, uint parentStorageId)
@@ -171,11 +182,11 @@ namespace LibMtpSharp
         {
             var firmwareFile = new FileStruct
             {
-                filesize = (ulong)fileInfo.Length,
-                filename = fileInfo.Name,
-                filetype = FileTypeEnum.Firmware,
-                parent_id = 0,
-                storage_id = 0
+                FileSize = (ulong)fileInfo.Length,
+                FileName = fileInfo.Name,
+                Filetype = FileTypeEnum.Firmware,
+                ParentId = 0,
+                StorageId = 0
             };
             LibMtpLibrary.SendFile(_mptDeviceStructPointer, fileInfo.FullName, ref firmwareFile,
                 (sent, total, _) =>
@@ -188,7 +199,7 @@ namespace LibMtpSharp
         public void DeleteObject(uint objectId)
         {
             if (0 != LibMtpLibrary.DeleteObject(_mptDeviceStructPointer, objectId)) 
-                throw new Exception($"Failed to delete the object with it {objectId}");
+                throw new ApplicationException($"Failed to delete the object with it {objectId}");
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using LibMtpSharp.Enums;
 
-namespace LibMtpSharp
+namespace LibMtpSharp.NativeAPI
 {
     /// <summary>
     /// LibMtp API.

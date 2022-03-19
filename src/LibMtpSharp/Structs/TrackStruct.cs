@@ -13,98 +13,98 @@ namespace LibMtpSharp.Structs
         /// <summary>
         /// Unique item ID
         /// </summary>
-        public uint item_id;
+        public uint ItemId;
         /// <summary>
         /// ID of parent folder
         /// </summary>
-        public uint parent_id;
+        public uint ParentId;
         /// <summary>
         /// ID of storage holding this track
         /// </summary>
-        public uint storage_id;
+        public uint StorageId;
         /// <summary>
         /// Track title
         /// </summary>
         [MarshalAs(UnmanagedType.LPUTF8Str)]
-        public string title;
+        public string Title;
         /// <summary>
         /// Name of recording artist
         /// </summary>
         [MarshalAs(UnmanagedType.LPUTF8Str)]
-        public string artist;
+        public string Artist;
         /// <summary>
         /// Name of recording composer
         /// </summary>
         [MarshalAs(UnmanagedType.LPUTF8Str)]
-        public string composer;
+        public string Composer;
         /// <summary>
         /// Genre name for track
         /// </summary>
         [MarshalAs(UnmanagedType.LPUTF8Str)]
-        public string genre;
+        public string Genre;
         /// <summary>
         /// Album name for track
         /// </summary>
         [MarshalAs(UnmanagedType.LPUTF8Str)]
-        public string album;
+        public string Album;
         /// <summary>
         /// Date of original recording as a string
         /// </summary>
         [MarshalAs(UnmanagedType.LPUTF8Str)]
-        public string date;
+        public string Date;
         /// <summary>
         /// Original filename of this track
         /// </summary>
         [MarshalAs(UnmanagedType.LPUTF8Str)]
-        public string filename;
+        public string FileName;
         /// <summary>
         /// Track number (in sequence on recording)
         /// </summary>
-        public ushort tracknumber;
+        public ushort TrackNumber;
         /// <summary>
         /// Duration in milliseconds
         /// </summary>
-        public uint duration;
+        public uint Duration;
         /// <summary>
         /// Sample rate of original file, min 0x1f80 max 0xbb80
         /// </summary>
-        public uint samplerate;
+        public uint SampleRate;
         /// <summary>
         /// Number of channels in this recording 0 = unknown, 1 or 2
         /// </summary>
-        public ushort nochannels;
+        public ushort NumberOfChannels;
         /// <summary>
         /// FourCC wave codec name
         /// </summary>
-        public uint wavecodec;
+        public uint Wavecodec;
         /// <summary>
         /// (Average) bitrate for this file min=1 max=0x16e360 
         /// </summary>
-        public uint bitrate;
+        public uint Bitrate;
         /// <summary>
         /// 0 = unused, 1 = constant, 2 = VBR, 3 = free
         /// </summary>
-        public ushort bitratetype;
+        public ushort BitrateType;
         /// <summary>
         /// User rating 0-100 (0x00-0x64)
         /// </summary>
-        public ushort rating;
+        public ushort Rating;
         /// <summary>
         /// Number of times used/played
         /// </summary>
-        public uint usecount;
+        public uint Usecount;
         /// <summary>
         /// Size of track file in bytes
         /// </summary>
-        public ulong filesize;
+        public ulong Filesize;
         /// <summary>
         /// Date of last alteration of the track
         /// </summary>
-        public ulong modificationdate;
+        public ulong ModificationDate;
         /// <summary>
         /// Filetype used for the current track
         /// </summary>
-        public FileTypeEnum filetype;
+        public FileTypeEnum FileType;
         /// <summary>
         /// Next track in list or NULL if last track
         /// </summary>

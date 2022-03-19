@@ -3,13 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace LibMtpSharp
+namespace LibMtpSharp.Lists
 {
-    public abstract class LibMtpUnmanagedList<T> : IEnumerable<T>, IDisposable
+    internal abstract class UnmanagedList<T> : IEnumerable<T>, IDisposable
     {
         private readonly IntPtr _listPtr;
 
-        public LibMtpUnmanagedList(IntPtr listPtr)
+        public UnmanagedList(IntPtr listPtr)
         {
             _listPtr = listPtr;
         }
@@ -50,7 +50,7 @@ namespace LibMtpSharp
             GC.SuppressFinalize(this);
         }
         
-        ~LibMtpUnmanagedList()
+        ~UnmanagedList()
         {
             ReleaseUnmanagedResources();
         }

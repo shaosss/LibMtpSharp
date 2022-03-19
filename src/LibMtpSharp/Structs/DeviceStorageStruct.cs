@@ -12,7 +12,7 @@ namespace LibMtpSharp.Structs
         /// <summary>
         /// Unique ID for this storage
         /// </summary>
-        public uint id;
+        public uint Id;
         
         /// <summary>
         /// Storage type

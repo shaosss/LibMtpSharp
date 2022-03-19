@@ -11,21 +11,21 @@ namespace LibMtpSharp.Structs
         /// <summary>
         /// The device entry for this raw device
         /// </summary>
-        internal DeviceEntry device_entry;
+        public DeviceEntry DeviceEntry;
         
         /// <summary>
         /// Location of the bus, if device available
         /// </summary>
-        internal uint bus_location;
+        internal uint BusLocation;
         
         /// <summary>
         /// Device number on the bus, if device available
         /// </summary>
-        internal byte devnum;
+        internal byte DevNum;
 
         public override string ToString()
         {
-            return $"Device {device_entry} located at bus: {bus_location}, devNum: {devnum}";
+            return $"Device {DeviceEntry} located at bus: {BusLocation}, devNum: {DevNum}";
         }
     }
 }

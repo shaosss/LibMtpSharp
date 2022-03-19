@@ -1,12 +1,12 @@
 ﻿using System;
 using LibMtpSharp.Structs;
 
-namespace LibMtpSharp
+namespace LibMtpSharp.Lists
 {
-    public class TrackList : LibMtpUnmanagedList<TrackStruct>
+    internal class TrackList : UnmanagedList<TrackStruct>
     {
         public TrackList(IntPtr mptDeviceStructPointer) 
-            : base(LibMtpLibrary.GetTracks(mptDeviceStructPointer))
+            : base(NativeAPI.LibMtpLibrary.GetTracks(mptDeviceStructPointer))
         {
         }
 
@@ -17,7 +17,7 @@ namespace LibMtpSharp
 
         protected override void FreeItem(IntPtr item)
         {
-            LibMtpLibrary.FreeTrack(item);
+            NativeAPI.LibMtpLibrary.FreeTrack(item);
         }
     }
 }

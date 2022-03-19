@@ -2,10 +2,10 @@
 
 public enum DebugLevelEnum
 {
-    LIBMTP_DEBUG_NONE =	0x00,
-    LIBMTP_DEBUG_PTP  = 0x01,
-    LIBMTP_DEBUG_PLST = 0x02,
-    LIBMTP_DEBUG_USB  = 0x04,
-    LIBMTP_DEBUG_DATA = 0x08,
-    LIBMTP_DEBUG_ALL  = 0xFF
+    None =	0x00,
+    Ptp  = 0x01,
+    Plst = 0x02,
+    Usb  = 0x04,
+    Data = 0x08,
+    All  = 0xFF
 }

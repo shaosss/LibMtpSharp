@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using LibMtpSharp.Enums;
 
-namespace LibMtpSharp
+namespace LibMtpSharp.Lists
 {
     internal class SupportedTypesList : IEnumerable<FileTypeEnum>, IDisposable
     {
@@ -13,7 +13,7 @@ namespace LibMtpSharp
         
         public SupportedTypesList(IntPtr mptDeviceStructPointer)
         {
-            var error = LibMtpLibrary.GetSupportedFiletypes(mptDeviceStructPointer, ref _listPointer,
+            var error = NativeAPI.LibMtpLibrary.GetSupportedFiletypes(mptDeviceStructPointer, ref _listPointer,
                 ref _lengthOfList);
             if (error != 0)
                 throw new ApplicationException("Error while retrieving supported types");    
@@ -36,7 +36,7 @@ namespace LibMtpSharp
 
         private void ReleaseUnmanagedResources()
         {
-            LibMtpLibrary.Free(_listPointer);
+            NativeAPI.LibMtpLibrary.Free(_listPointer);
         }
 
         public void Dispose()

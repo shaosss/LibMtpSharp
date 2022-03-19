@@ -13,39 +13,39 @@ namespace LibMtpSharp.Structs
         /// <summary>
         /// Unique item ID
         /// </summary>
-        public uint item_id;
+        public uint ItemId;
         
         /// <summary>
         /// ID of parent folder
         /// </summary>
-        public uint parent_id;
+        public uint ParentId;
         
         /// <summary>
         /// ID of storage holding this file
         /// </summary>
-        public uint storage_id;
+        public uint StorageId;
         
         /// <summary>
         /// Filename of this file
         /// </summary>
         [MarshalAs(UnmanagedType.LPUTF8Str)]
-        public string filename;
+        public string FileName;
         
         /// <summary>
         /// Size of file in bytes
         /// </summary>
-        public ulong filesize;
+        public ulong FileSize;
         
         //Todo: check long fits
         /// <summary>
         /// Date of last alteration of the file
         /// </summary>
-        public long modificationdate;
+        public long ModificationDate;
         
         /// <summary>
         /// Filetype used for the current file
         /// </summary>
-        public FileTypeEnum filetype;
+        public FileTypeEnum Filetype;
         
         /// <summary>
         ///  Next file in list or NULL if last file 

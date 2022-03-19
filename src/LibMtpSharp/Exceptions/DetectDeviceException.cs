@@ -6,7 +6,7 @@ namespace LibMtpSharp.Exceptions;
 public class DetectDeviceException : ApplicationException
 {
     public DetectDeviceException(ErrorEnum error)
-        : base("")
+        : base($"Device detect error: {error}")
     {
     }
 }

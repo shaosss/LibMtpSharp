@@ -6,7 +6,7 @@ using LibMtpSharp.Enums;
 using LibMtpSharp.Exceptions;
 using LibMtpSharp.Structs;
 
-namespace LibMtpSharp
+namespace LibMtpSharp.Lists
 {
     public class RawDeviceList : IEnumerable<RawDevice>, IDisposable
     {
@@ -15,8 +15,7 @@ namespace LibMtpSharp
         
         public RawDeviceList()
         {
-
-            var error = LibMtpLibrary.DetectRawDevices(ref _deviceListPointer, ref _numberOfDevices);
+            var error = NativeAPI.LibMtpLibrary.DetectRawDevices(ref _deviceListPointer, ref _numberOfDevices);
             if (error == ErrorEnum.NoDeviceAttached)
                 return;
             if (error != ErrorEnum.None)
@@ -41,7 +40,7 @@ namespace LibMtpSharp
         private void ReleaseUnmanagedResources()
         {
             if (_deviceListPointer != IntPtr.Zero)
-                LibMtpLibrary.Free(_deviceListPointer);
+                NativeAPI.LibMtpLibrary.Free(_deviceListPointer);
         }
 
         public void Dispose()

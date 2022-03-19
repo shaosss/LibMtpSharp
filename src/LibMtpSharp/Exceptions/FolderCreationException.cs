@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Zunc.LibMtp.Exceptions
+namespace LibMtpSharp.Exceptions
 {
     public class FolderCreationException : ApplicationException
     {

@@ -1,12 +1,12 @@
 ﻿using System;
 using LibMtpSharp.Structs;
 
-namespace LibMtpSharp
+namespace LibMtpSharp.Lists
 {
-    public class FileAndFolderList : LibMtpUnmanagedList<FileStruct>
+    internal class FileAndFolderList : UnmanagedList<FileStruct>
     {
         public FileAndFolderList(IntPtr mptDeviceStructPointer, uint storageId, uint parentId)
-            : base(LibMtpLibrary.GetParentContent(mptDeviceStructPointer, storageId, parentId))
+            : base(NativeAPI.LibMtpLibrary.GetParentContent(mptDeviceStructPointer, storageId, parentId))
         {
         }
 
@@ -17,7 +17,7 @@ namespace LibMtpSharp
 
         protected override void FreeItem(IntPtr item)
         {
-            LibMtpLibrary.FreeFile(item);
+            NativeAPI.LibMtpLibrary.FreeFile(item);
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using LibMtpSharp.Enums;
 using LibMtpSharp.Structs;
 
-namespace LibMtpSharp
+namespace LibMtpSharp.NativeAPI
 {
     /// <summary>
     /// The basic device management API.

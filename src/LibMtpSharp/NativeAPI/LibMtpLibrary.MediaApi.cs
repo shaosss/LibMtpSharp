@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using LibMtpSharp.Structs;
 
-namespace LibMtpSharp
+namespace LibMtpSharp.NativeAPI
 {
     /// <summary>
     /// The callback type definition. Notice that a progress percentage ratio is easy to calculate by dividing
@@ -154,11 +154,11 @@ namespace LibMtpSharp
         /// </ul></param>
         /// <returns>0 on success, any other value means failure.</returns>
         [DllImport(LibMtpName)]
-        private static extern int LIBMTP_Create_New_Album(IntPtr device, ref AlbumStruct metadata);
+        private static extern int LIBMTP_Create_New_Album(IntPtr device, ref AlbumNativeStruct metadata);
 
-        public static int CreateNewAlbum(IntPtr device, ref AlbumStruct albumStruct)
+        public static int CreateNewAlbum(IntPtr device, ref AlbumNativeStruct albumNativeStruct)
         {
-            return LIBMTP_Create_New_Album(device, ref albumStruct);
+            return LIBMTP_Create_New_Album(device, ref albumNativeStruct);
         }
         
         /// <summary>
@@ -171,11 +171,11 @@ namespace LibMtpSharp
         ///     !notice that the field <code>album_id</code> must contain the appropriate album ID.</param>
         /// <returns>0 on success, any other value means failure.</returns>
         [DllImport(LibMtpName)]
-        private static extern int LIBMTP_Update_Album(IntPtr device, ref AlbumStruct metadata);
+        private static extern int LIBMTP_Update_Album(IntPtr device, ref AlbumNativeStruct metadata);
         
-        public static int UpdateAlbum(IntPtr device, ref AlbumStruct albumStruct)
+        public static int UpdateAlbum(IntPtr device, ref AlbumNativeStruct albumNativeStruct)
         {
-            return LIBMTP_Update_Album(device, ref albumStruct);
+            return LIBMTP_Update_Album(device, ref albumNativeStruct);
         }
 
         /// <summary>
@@ -229,9 +229,9 @@ namespace LibMtpSharp
         }
 
         [DllImport(LibMtpName)]
-        private static extern int LIBMTP_Send_Representative_Sample(IntPtr device, uint id, ref FileSampleDataStruct sampledata);
+        private static extern int LIBMTP_Send_Representative_Sample(IntPtr device, uint id, ref FileSampleDataNativeStruct sampledata);
 
-        public static int SendRepresentativeSample(IntPtr device, uint id, ref FileSampleDataStruct sampledata)
+        public static int SendRepresentativeSample(IntPtr device, uint id, ref FileSampleDataNativeStruct sampledata)
         {
             return LIBMTP_Send_Representative_Sample(device, id, ref sampledata);
         }

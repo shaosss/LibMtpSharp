@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using LibMtpSharp.Structs;
 
-namespace LibMtpSharp
+namespace LibMtpSharp.NativeAPI
 {
     /// <summary>
     /// Storage and files API.
