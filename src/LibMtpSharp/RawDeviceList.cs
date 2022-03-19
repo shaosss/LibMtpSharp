@@ -6,7 +6,7 @@ using LibMtpSharp.Enums;
 using LibMtpSharp.Exceptions;
 using LibMtpSharp.Structs;
 
-namespace LibMtpSharp.Lists
+namespace LibMtpSharp
 {
     public class RawDeviceList : IEnumerable<RawDevice>, IDisposable
     {
