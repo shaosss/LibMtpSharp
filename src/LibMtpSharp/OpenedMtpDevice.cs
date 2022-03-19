@@ -152,10 +152,18 @@ namespace LibMtpSharp
             ReleaseUnmanagedResources();
         }
 
-        public void SendTrack(ref TrackStruct track, MtpDataGetFunction dataGetFunc,
-            ProgressFunction progressFunction)
+        /// <summary>
+        /// Sends the track with passed metadata to the device
+        /// </summary>
+        /// <param name="track">Track metadata structure to send to device</param>
+        /// <param name="dataProvider">Requests data. If data is null - operation considered to be cancelled</param>
+        /// <param name="progressCallback">Reports a progress and returns boolean indication if the operation was cancelled</param>
+        /// <exception cref="Exception"></exception>
+        public void SendTrack(ref TrackStruct track, Func<int, byte[]> dataProvider,
+            Func<double, bool> progressCallback)
         {
-            var result = LibMtpLibrary.SendTrackFromHandler(_mptDeviceStructPointer, dataGetFunc, ref track, progressFunction);
+            var result = LibMtpLibrary.SendTrackFromHandler(_mptDeviceStructPointer, GetDataFunction(dataProvider), 
+                ref track, GetProgressFunction(progressCallback));
             if (result != 0)
                 throw new Exception("Sending file failed");
         }
@@ -200,6 +208,44 @@ namespace LibMtpSharp
         {
             if (0 != LibMtpLibrary.DeleteObject(_mptDeviceStructPointer, objectId)) 
                 throw new ApplicationException($"Failed to delete the object with it {objectId}");
+        }
+        
+        private MtpDataGetFunction GetDataFunction(Func<int, IList<byte>> getData)
+        {
+            return (IntPtr _, IntPtr _, uint wantlen, IntPtr data, out uint gotlen) =>
+            {
+                var whereToWrite = data;
+                long leftToRead = wantlen;
+                gotlen = 0;
+                do
+                {
+                    var howMuchToRead = leftToRead > int.MaxValue ? int.MaxValue : (int)leftToRead;
+
+                    var readBytes = getData(howMuchToRead);
+                    if (readBytes == null)
+                        return (ushort)HandlerReturn.Cancel;
+                    for (int i = 0; i < readBytes.Count; i++)
+                    {
+                        Marshal.WriteByte(whereToWrite, i, readBytes[i]);
+                    }
+
+                    whereToWrite = IntPtr.Add(whereToWrite, readBytes.Count);
+                    leftToRead -= readBytes.Count;
+                    gotlen += (uint)readBytes.Count;
+                } while (leftToRead != 0);
+
+                return (ushort)HandlerReturn.Ok;
+            };
+        }
+        
+        private ProgressFunction GetProgressFunction(Func<double, bool> progressCallback)
+        {
+            return (sent, total, _) =>
+            {
+                double progress = (double)sent / total;
+                var isCancelled = progressCallback(progress);
+                return isCancelled ? 1 : 0;
+            };
         }
     }
 }

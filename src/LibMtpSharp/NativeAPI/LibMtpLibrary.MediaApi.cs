@@ -12,7 +12,7 @@ namespace LibMtpSharp.NativeAPI
     /// @param data a user-defined dereferencable pointer
     /// @return if anything else than 0 is returned, the current transfer will be interrupted / cancelled.
     /// </summary>
-    public delegate int ProgressFunction(ulong sent, ulong total, IntPtr data);
+    internal delegate int ProgressFunction(ulong sent, ulong total, IntPtr data);
 
     /// <summary>
     /// Callback function for get by handler function
@@ -24,10 +24,10 @@ namespace LibMtpSharp.NativeAPI
     /// @return LIBMTP_HANDLER_RETURN_OK if successful,
     /// LIBMTP_HANDLER_RETURN_ERROR on error or LIBMTP_HANDLER_RETURN_CANCEL to cancel the transfer
     /// </summary>
-    public delegate ushort MtpDataGetFunction(IntPtr parameters, IntPtr priv,
+    internal delegate ushort MtpDataGetFunction(IntPtr parameters, IntPtr priv,
         uint wantlen, IntPtr data, out uint gotlen);
         
-    public enum HandlerReturn : ushort
+    internal enum HandlerReturn : ushort
     { 
         Ok = 0,
         Error = 1,
