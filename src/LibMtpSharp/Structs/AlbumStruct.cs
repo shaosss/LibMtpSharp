@@ -14,19 +14,24 @@ public struct AlbumStruct
     public string Genre { get; set; }
     public uint[] Tracks { get; set; }
 
-    internal AlbumStruct(AlbumNativeStruct albumNativeStruct)
+    internal AlbumStruct(AlbumNativeStruct albumNativeStruct) : this()
     {
-        AlbumId = albumNativeStruct.album_id;
-        ParentId = albumNativeStruct.parent_id;
-        StorageId = albumNativeStruct.storage_id;
-        Name = albumNativeStruct.name;
-        Artist = albumNativeStruct.artist;
-        Composer = albumNativeStruct.composer;
-        Genre = albumNativeStruct.genre;
-        Tracks = new uint[albumNativeStruct.no_tracks];
-        for (int i = 0; i < albumNativeStruct.no_tracks; i++)
+        MapFromNative(ref albumNativeStruct);
+    }
+
+    private void MapFromNative(ref AlbumNativeStruct nativeStruct)
+    {
+        AlbumId = nativeStruct.album_id;
+        ParentId = nativeStruct.parent_id;
+        StorageId = nativeStruct.storage_id;
+        Name = nativeStruct.name;
+        Artist = nativeStruct.artist;
+        Composer = nativeStruct.composer;
+        Genre = nativeStruct.genre;
+        Tracks = new uint[nativeStruct.no_tracks];
+        for (int i = 0; i < nativeStruct.no_tracks; i++)
         {
-            Tracks[i] = (uint)Marshal.ReadInt64(albumNativeStruct.tracks, i*sizeof(uint));
+            Tracks[i] = (uint)Marshal.ReadInt64(nativeStruct.tracks, i*sizeof(uint));
         }
     }
 
@@ -52,6 +57,7 @@ public struct AlbumStruct
                 NativeAPI.LibMtpLibrary.CreateNewAlbum(mptDeviceStructPointer, ref albumNativeStruct);
             else
                 NativeAPI.LibMtpLibrary.UpdateAlbum(mptDeviceStructPointer, ref albumNativeStruct);
+            MapFromNative(ref albumNativeStruct);
         }
         finally
         {
