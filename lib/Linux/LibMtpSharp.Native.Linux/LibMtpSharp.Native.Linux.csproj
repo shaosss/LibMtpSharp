@@ -16,7 +16,7 @@
         <PackageReleaseNotes>Initial release</PackageReleaseNotes>
     </PropertyGroup>
     <PropertyGroup>
-      <OutputPath>..\..\packages\</OutputPath>
+      <OutputPath>..\..\..\packages\</OutputPath>
     </PropertyGroup>
 
     <ItemGroup>

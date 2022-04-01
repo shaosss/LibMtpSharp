@@ -1,4 +1,4 @@
-name: Package build
+name: Build and push packages
 
 on:
   workflow_dispatch:
@@ -24,7 +24,7 @@ jobs:
       uses: actions/upload-artifact@v2.3.1
       with:
         name: windows_packages
-        path: ./lib/packages/LibMtpSharp.Native.Windows.*.nupkg
+        path: ./packages/LibMtpSharp.Native.Windows.*.nupkg
   test_package_windows:
     name: Test windows nuget packages
     runs-on: windows-latest
@@ -39,7 +39,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: windows_packages
-        path: ./lib/packages/
+        path: ./packages/
     - name: Run test
       run: dotnet run --project ./test/LibMtpSharp.Native.Test.Windows/LibMtpSharp.Native.Test.Windows.csproj
   build_package_linux:
@@ -62,7 +62,7 @@ jobs:
       uses: actions/upload-artifact@v2.3.1
       with:
         name: linux_packages
-        path: ./lib/packages/LibMtpSharp.Native.Linux.*.nupkg
+        path: ./packages/LibMtpSharp.Native.Linux.*.nupkg
   test_package_linux:
     name: Test linux nuget packages
     runs-on: ubuntu-latest
@@ -77,6 +77,90 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: linux_packages
-        path: ./lib/packages/
+        path: ./packages/
     - name: Run test
       run: dotnet run --project ./test/LibMtpSharp.Native.Test.Linux/LibMtpSharp.Native.Test.Linux.csproj
+  build_package_macos:
+    name: Build macOS nuget packages
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Make input folder
+        run: mkdir lib/MacOS/input
+      - name: Build native libraries
+        run: sh ./../buildNativeLibs.sh ${GITHUB_WORKSPACE}/lib ${GITHUB_WORKSPACE}/lib/MacOS/output
+        working-directory: lib/MacOS/input
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+      - name: Build
+        run: dotnet build ./lib/MacOS/LibMtpSharp.Native.MacOS.WithDependencies/LibMtpSharp.Native.MacOS.WithDependencies.csproj
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v2.3.1
+        with:
+          name: macos_packages
+          path: ./packages/LibMtpSharp.Native.MacOS.*.nupkg
+  test_package_macos:
+    name: Test macOS nuget packages
+    runs-on: macos-latest
+    needs: build_package_macos
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+      - name: Download MacOS packages
+        uses: actions/download-artifact@v2
+        with:
+          name: macos_packages
+          path: ./packages/
+      - name: Run test
+        run: dotnet run --project ./test/LibMtpSharp.Native.Test.MacOS/LibMtpSharp.Native.Test.MacOS.csproj
+  build_managed_package:
+    name: Build shared managed package
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+    - name: Build library
+      run: dotnet build ./src/LibMtpSharp/LibMtpSharp.csproj -c Release
+    - name: Build package
+      run: dotnet pack ./src/LibMtpSharp/LibMtpSharp.csproj -c Release -o ./packages/
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v2.3.1
+      with:
+        name: shared_packages
+        path: ./packages/LibMtpSharp.*.nupkg
+  publish_packages:
+    name: Publish Nuget packages
+    runs-on: ubuntu-latest
+    needs: [test_package_windows, test_package_linux, test_package_macos, build_managed_package]
+    steps:
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+      - name: Download linux packages
+        uses: actions/download-artifact@v2
+        with:
+          name: linux_packages
+          path: ./packages/
+      - name: Download windows packages
+        uses: actions/download-artifact@v2
+        with:
+          name: windows_packages
+          path: ./packages/
+      - name: Download shared packages
+        uses: actions/download-artifact@v2
+        with:
+          name: shared_packages
+          path: ./packages/
+      - name: Push the packages
+        env:
+          API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: dotnet nuget push "*.nupkg" --skip-duplicate -k "$API_KEY" -s https://api.nuget.org/v3/index.json
