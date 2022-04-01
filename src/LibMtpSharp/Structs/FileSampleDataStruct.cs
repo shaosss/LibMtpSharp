@@ -29,7 +29,7 @@ namespace LibMtpSharp.Structs
                 Width = fileSampleDataStruct.width;
                 Height = fileSampleDataStruct.height;
                 Duration = fileSampleDataStruct.duration;
-                Data = new byte[fileSampleDataStruct.size];
+                Data = fileSampleDataStruct.size == 0 ? null : new byte[fileSampleDataStruct.size];
                 var dataPtr = fileSampleDataStruct.data;
                 for (ulong i = 0; i < fileSampleDataStruct.size; i++)
                 {

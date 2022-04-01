@@ -22,14 +22,6 @@ namespace LibMtpSharp
                 throw new OpenDeviceException(rawDevice);
         }
 
-        public void ForceCachedFlag(bool cached)
-        {
-            //Hack to enumerate files and folders, while being able to send data to device
-            var deviceModifiedStruct = Marshal.PtrToStructure<MtpDeviceStruct>(_mptDeviceStructPointer);
-            deviceModifiedStruct.cached = cached ? 1 : 0;
-            Marshal.StructureToPtr(deviceModifiedStruct, _mptDeviceStructPointer, false);
-        }
-
         public string GetManufacturerName()
         {
             return LibMtpLibrary.GetManufacturerName(_mptDeviceStructPointer);
@@ -98,9 +90,10 @@ namespace LibMtpSharp
             }
         }
         
-        public IEnumerable<FileStruct> GetFolderContent(uint storageId, uint folderId)
+        public IEnumerable<FileStruct> GetFolderContent(uint storageId, uint? folderId)
         {
-            using (var fileList = new FileAndFolderList(_mptDeviceStructPointer, storageId, folderId))
+            using (var fileList = new FileAndFolderList(_mptDeviceStructPointer, storageId, 
+                       folderId ?? LibMtpLibrary.LibmtpFilesAndFoldersRoot))
             {
                 foreach (var file in fileList)
                     yield return file;
@@ -159,7 +152,7 @@ namespace LibMtpSharp
         /// <param name="dataProvider">Requests data. If data is null - operation considered to be cancelled</param>
         /// <param name="progressCallback">Reports a progress and returns boolean indication if the operation was cancelled</param>
         /// <exception cref="Exception"></exception>
-        public void SendTrack(ref TrackStruct track, Func<int, byte[]> dataProvider,
+        public void SendTrack(ref TrackStruct track, Func<int, IList<byte>> dataProvider,
             Func<double, bool> progressCallback)
         {
             var result = LibMtpLibrary.SendTrackFromHandler(_mptDeviceStructPointer, GetDataFunction(dataProvider), 
