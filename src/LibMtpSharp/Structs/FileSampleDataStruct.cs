@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 using LibMtpSharp.Enums;
+using LibMtpSharp.NativeAPI;
 
 namespace LibMtpSharp.Structs
 {
@@ -14,14 +15,14 @@ namespace LibMtpSharp.Structs
 
         internal FileSampleDataStruct(IntPtr devicePtr, uint objectId)
         {
-            var fileSampleDataPtr = NativeAPI.LibMtpLibrary.CreateFileSampleData();
+            var fileSampleDataPtr = LibMtpLibrary.CreateFileSampleData();
             if (fileSampleDataPtr == IntPtr.Zero)
                 throw new ApplicationException("Fails to allocate FileSampleData in LibMtp native layer");
             try
             {
-                if (0 != NativeAPI.LibMtpLibrary.GetRepresentativeSample(devicePtr, objectId, fileSampleDataPtr))
+                if (0 != LibMtpLibrary.GetRepresentativeSample(devicePtr, objectId, fileSampleDataPtr))
                 {
-                    NativeAPI.LibMtpLibrary.DumpErrorStack(devicePtr);
+                    LibMtpLibrary.DumpErrorStack(devicePtr);
                     throw new ApplicationException($"Cannot retrieve representative sample for object id {objectId}");
                 }
                 var fileSampleDataStruct = Marshal.PtrToStructure<FileSampleDataNativeStruct>(fileSampleDataPtr);
@@ -41,7 +42,7 @@ namespace LibMtpSharp.Structs
             }
             finally
             {
-                NativeAPI.LibMtpLibrary.FreeFileSampleData(fileSampleDataPtr);
+                LibMtpLibrary.FreeFileSampleData(fileSampleDataPtr);
             }
         }
 
@@ -60,7 +61,7 @@ namespace LibMtpSharp.Structs
                     data = dataPtr,
                     size = (ulong)Data.Length
                 };
-                NativeAPI.LibMtpLibrary.SendRepresentativeSample(mptDeviceStructPointer, objectId, ref fileSampleData);
+                LibMtpLibrary.SendRepresentativeSample(mptDeviceStructPointer, objectId, ref fileSampleData);
             }
             finally
             {
