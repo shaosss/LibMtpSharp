@@ -22,7 +22,7 @@ You can see all the packages and differences in the table below:
 
 The dependencies package include following libraries: libgcrypt, libgpg-error, libiconv, libcharset and libusb.
 
-## What has been changed?
+## What has been changed in native libmtp?
 
 The libmtp native library in the packages contains followinf changes:
 - Add `LIBMTP_Free(void *)` function to free native resources (.net can't access c `free()` function directly, since it's behaviour can be compiler specific)
