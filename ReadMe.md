@@ -54,3 +54,5 @@ using (var list = new RawDeviceList())
 ```
 
 `OpenedMtpDevice` contains the methods to communicate with device. **! `OpenedMtpDevice` is a disposable object. When you finished communicating with device - you should Dispose the instance. This is equivalent to closing the connection. !**
+
+You can donate through Github or [Paypal](https://www.paypal.com/donate/?hosted_button_id=FFM78JRJCKNS8)
