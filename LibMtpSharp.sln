@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibMtpSharp.Native.MacOS", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibMtpSharp.Native.MacOS.WithDependencies", "lib\MacOS\LibMtpSharp.Native.MacOS.WithDependencies\LibMtpSharp.Native.MacOS.WithDependencies.csproj", "{0AAD0834-4C0F-4359-81EC-A24ADC33375B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibMtpSharp.Native.Test.MacOS", "test\LibMtpSharp.Native.Test.MacOS\LibMtpSharp.Native.Test.MacOS.csproj", "{EB70B350-8350-4373-A6C5-BF5B5C087353}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,9 +64,14 @@ Global
 		{0AAD0834-4C0F-4359-81EC-A24ADC33375B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0AAD0834-4C0F-4359-81EC-A24ADC33375B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0AAD0834-4C0F-4359-81EC-A24ADC33375B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB70B350-8350-4373-A6C5-BF5B5C087353}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB70B350-8350-4373-A6C5-BF5B5C087353}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB70B350-8350-4373-A6C5-BF5B5C087353}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB70B350-8350-4373-A6C5-BF5B5C087353}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{EC8E9C7A-4FA5-49DE-B620-1CE0D5CED757} = {ED277DEF-EB24-4EE1-81E9-849326885400}
 		{E9215BD4-1625-48C2-87B8-9B8BF391FEBD} = {ED277DEF-EB24-4EE1-81E9-849326885400}
+		{EB70B350-8350-4373-A6C5-BF5B5C087353} = {ED277DEF-EB24-4EE1-81E9-849326885400}
 	EndGlobalSection
 EndGlobal
