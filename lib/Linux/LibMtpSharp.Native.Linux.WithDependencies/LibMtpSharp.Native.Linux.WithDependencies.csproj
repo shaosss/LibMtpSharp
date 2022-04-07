@@ -6,14 +6,16 @@
         <IncludeBuildOutput>false</IncludeBuildOutput>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <NoWarn>$(NoWarn);NU5128</NoWarn>
-        <PackageVersion>1.1.20-alpha</PackageVersion>
+        <PackageVersion>1.1.20-beta</PackageVersion>
         <Title>LibMtpSharp.Native.Linux.WithDependencies</Title>
         <Authors>Alexandr Shevchenko</Authors>
         <Description>The native dependencies of LibMtp library for LibMtpSharp build for Linux</Description>
         <Copyright>Copyright ©2022 Alexandr Shevchenko</Copyright>
-        <PackageProjectUrl>https://github.com/shao-sss/libMtpSharp</PackageProjectUrl>
+        <PackageProjectUrl>https://github.com/shaosss/libMtpSharp</PackageProjectUrl>
         <PackageTags>MTP MTPZ</PackageTags>
-        <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+        <PackageReleaseNotes>License update 
+Repository address fix</PackageReleaseNotes>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
     
     <PropertyGroup>
