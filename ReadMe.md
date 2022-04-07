@@ -4,7 +4,7 @@ LibMtpSharp is a wrapper around [libmtp library](https://github.com/libmtp/libmt
 at [this fork](https://github.com/shaosss/libmtp) which made for being able to wrap c code properly
 and some ease of use functionality.
 
-##What packages does I need to use?
+## What packages does I need to use?
 
 There are multiple packages related to the wrapper: the wrapper itself and packages with native libraries.
 To use the wrapper you need LibMtpSharp package and appropriate package for the OS which your SW targets.
@@ -22,14 +22,14 @@ You can see all the packages and differences in the table below:
 
 The dependencies package include following libraries: libgcrypt, libgpg-error, libiconv, libcharset and libusb.
 
-##What has been changed?
+## What has been changed?
 
 The libmtp native library in the packages contains followinf changes:
 - Add `LIBMTP_Free(void *)` function to free native resources (.net can't access c `free()` function directly, since it's behaviour can be compiler specific)
 - Add bcd device info to `DeviceEntry` struct.
 - Make MTPZ data be able to come from shared resources, not only from file in $HOME directory as used in vanila libmtp library.
 
-##How to use wrapper?
+## How to use wrapper?
 
 The documentation is limited for now, but you can use LibMtp library documentation for reference. The documentation will be improved with time.
 
