@@ -1,7 +1,8 @@
 name: Build and push packages
 
 on:
-  workflow_dispatch:
+  release:
+    types: [published]
 
 jobs:
   build_package_windows:
