@@ -105,6 +105,17 @@ namespace LibMtpSharp
             }
         }
 
+        public IEnumerable<FileStruct> GetFiles(Func<double, bool> progressCallback)
+        {
+            using (var fileList = new FileList(_mptDeviceStructPointer, GetProgressFunction(progressCallback)))
+            {
+                foreach (var file in fileList)
+                {
+                    yield return file;
+                }
+            }
+        }
+
         public IEnumerable<AlbumStruct> GetAlbumList()
         {
             using (var albumList = new AlbumList(_mptDeviceStructPointer))

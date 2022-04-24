@@ -118,7 +118,7 @@ namespace LibMtpSharp.NativeAPI
         [DllImport(LibMtpName)]
         private static extern void LIBMTP_destroy_file_t(IntPtr file);
 
-        public static void FreeFile(IntPtr fileStructPointer)
+        public static void DestroyFile(IntPtr fileStructPointer)
         {
             LIBMTP_destroy_file_t(fileStructPointer);
         }
@@ -179,6 +179,31 @@ namespace LibMtpSharp.NativeAPI
         public static void DestroyFolder(IntPtr folder)
         {
             LIBMTP_destroy_folder_t(folder);
+        }
+
+        /// <summary>
+        /// This returns a long list of all files available on the current MTP device.
+        /// Folders will not be returned, but abstract entities like playlists and albums will show up as "files".
+        /// If you want to group your file listing by storage (per storage unit) or arrange files into folders,
+        /// you must dereference the <code>storage_id</code> and/or <code>parent_id</code> field of the returned
+        /// <code>LIBMTP_file_t</code> struct. To arrange by folders or files you typically have to create the proper
+        /// trees by calls to <code>LIBMTP_Get_Storage()</code> and/or <code>LIBMTP_Get_Folder_List()</code> first.
+        /// </summary>
+        /// <param name="device">a pointer to the device to get the file listing for.</param>
+        /// <param name="callback">a function to be called during the tracklisting retrieveal for displaying progress
+        /// bars etc, or NULL if you don't want any callbacks.</param>
+        /// <param name="data">a user-defined pointer that is passed along to the <code>progress</code> function
+        /// in order to pass along some user defined data to the progress updates. If not used, set this to NULL.</param>
+        /// <returns>a list of files that can be followed using the <code>next</code> field of the
+        /// <code>LIBMTP_file_t</code> data structure. Each of the metadata tags must be freed after use, and may
+        /// contain only partial metadata information, i.e. one or several fields may be NULL or 0.</returns>
+        [DllImport(LibMtpName)]
+        private static extern IntPtr LIBMTP_Get_Filelisting_With_Callback(IntPtr device, ProgressFunction callback,
+            IntPtr data);
+
+        public static IntPtr GetFilelistingWithCallback(IntPtr device, ProgressFunction callback)
+        {
+            return LIBMTP_Get_Filelisting_With_Callback(device, callback, IntPtr.Zero);
         }
     }
 }
