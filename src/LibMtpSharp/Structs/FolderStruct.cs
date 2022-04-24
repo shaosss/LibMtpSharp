@@ -7,7 +7,7 @@ namespace LibMtpSharp.Structs
     /// MTP Folder structure
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    internal struct FolderStruct
+    public struct FolderStruct
     {
         /// <summary>
         /// Unique folder ID
@@ -27,16 +27,17 @@ namespace LibMtpSharp.Structs
         /// <summary>
         /// Name of folder
         /// </summary>
-        public IntPtr name;
+        [MarshalAs(UnmanagedType.LPUTF8Str)]
+        public string name;
         
         /// <summary>
         /// Next folder at same level or NULL if no more
         /// </summary>
-        public IntPtr sibling;
+        internal IntPtr sibling;
         
         /// <summary>
         /// Child folder or NULL if no children
         /// </summary>
-        public IntPtr child;
+        internal IntPtr child;
     }
 }

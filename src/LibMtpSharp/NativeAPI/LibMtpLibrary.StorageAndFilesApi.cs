@@ -140,5 +140,45 @@ namespace LibMtpSharp.NativeAPI
         {
             return LIBMTP_Delete_Object(device, objectId);
         }
+        
+        /// <summary>
+        /// This returns a list of all folders available on the current MTP device.
+        /// </summary>
+        /// <param name="device">a pointer to the device to get the folder listing for.</param>
+        /// <param name="storage">a storage ID to get the folder list from</param>
+        /// <returns>a list of folders</returns>
+        [DllImport(LibMtpName)]
+        private static extern IntPtr LIBMTP_Get_Folder_List_For_Storage(IntPtr device, uint storage);
+        
+        public static IntPtr GetFolderListForStorage(IntPtr device, uint storageId)
+        {
+            return LIBMTP_Get_Folder_List_For_Storage(device, storageId);
+        }
+        
+        /// <summary>
+        /// This returns a list of all folders available on the current MTP device.
+        /// </summary>
+        /// <param name="device">a pointer to the device to get the folder listing for.</param>
+        /// <returns>a list of folders</returns>
+        [DllImport(LibMtpName)]
+        private static extern IntPtr LIBMTP_Get_Folder_List(IntPtr device);
+        
+        public static IntPtr GetFolderList(IntPtr device)
+        {
+            return LIBMTP_Get_Folder_List(device);
+        }
+
+        /// <summary>
+        /// This recursively deletes the memory for a folder structure.
+        /// This shall typically be called on a top-level folder list to detsroy the entire folder tree.
+        /// </summary>
+        /// <param name="folder">folder structure to destroy</param>
+        [DllImport(LibMtpName)]
+        private static extern void LIBMTP_destroy_folder_t(IntPtr folder);
+        
+        public static void DestroyFolder(IntPtr folder)
+        {
+            LIBMTP_destroy_folder_t(folder);
+        }
     }
 }

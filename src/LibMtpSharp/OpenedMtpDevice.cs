@@ -179,6 +179,15 @@ namespace LibMtpSharp
             return newFolderId;
         }
 
+        public IEnumerable<FolderStruct> GetFolderList(uint? storageId = null)
+        {
+            using (var folderList = new FolderList(_mptDeviceStructPointer, storageId))
+                foreach (var folder in folderList)
+                {
+                    yield return folder;
+                }
+        }
+
         public void SendFirmwareFile(FileInfo fileInfo, Func<double, bool> progressCallback)
         {
             var firmwareFile = new FileStruct
@@ -198,7 +207,7 @@ namespace LibMtpSharp
             if (0 != LibMtpLibrary.DeleteObject(_mptDeviceStructPointer, objectId)) 
                 throw new ApplicationException($"Failed to delete the object with it {objectId}");
         }
-        
+
         private MtpDataGetFunction GetDataFunction(Func<int, IList<byte>> getData)
         {
             return (IntPtr _, IntPtr _, uint wantlen, IntPtr data, out uint gotlen) =>
