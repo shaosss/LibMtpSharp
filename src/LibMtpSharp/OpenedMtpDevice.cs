@@ -13,10 +13,12 @@ namespace LibMtpSharp
     public class OpenedMtpDevice : IDisposable
     {
         private readonly IntPtr _mptDeviceStructPointer;
+        private readonly bool _cached;
 
         public OpenedMtpDevice(ref RawDevice rawDevice, bool cached)
         {
-            _mptDeviceStructPointer = cached ? LibMtpLibrary.OpenRawDevice(ref rawDevice) 
+            _cached = cached;
+            _mptDeviceStructPointer = _cached ? LibMtpLibrary.OpenRawDevice(ref rawDevice) 
                 : LibMtpLibrary.OpenRawDeviceUncached(ref rawDevice);
             if (_mptDeviceStructPointer == IntPtr.Zero)
                 throw new OpenDeviceException(rawDevice);
@@ -92,6 +94,9 @@ namespace LibMtpSharp
         
         public IEnumerable<FileStruct> GetFolderContent(uint storageId, uint? folderId)
         {
+            if (_cached)
+                throw new ApplicationException(
+                    "GetFolderContent cannot be called on cached device. Open device with cached: false");
             using (var fileList = new FileAndFolderList(_mptDeviceStructPointer, storageId, 
                        folderId ?? LibMtpLibrary.LibmtpFilesAndFoldersRoot))
             {
