@@ -80,9 +80,9 @@ namespace LibMtpSharp.NativeAPI
         [DllImport(LibMtpName)]
         private static extern IntPtr LIBMTP_Get_Tracklisting_With_Callback(IntPtr mtpDeviceStructPointer, ProgressFunction callback, IntPtr data);
         
-        public static IntPtr GetTracks(IntPtr mtpDeviceStructPointer)
+        public static IntPtr GetTracks(IntPtr mtpDeviceStructPointer, ProgressFunction progressCallback)
         {
-            return LIBMTP_Get_Tracklisting_With_Callback(mtpDeviceStructPointer, null, IntPtr.Zero);
+            return LIBMTP_Get_Tracklisting_With_Callback(mtpDeviceStructPointer, progressCallback, IntPtr.Zero);
         }
 
         /// <summary>

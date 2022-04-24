@@ -109,9 +109,9 @@ namespace LibMtpSharp
             }
         }
         
-        public IEnumerable<TrackStruct> GetTrackList()
+        public IEnumerable<TrackStruct> GetTrackList(Func<double, bool> progressCallback)
         {
-            using (var trackList = new TrackList(_mptDeviceStructPointer))
+            using (var trackList = new TrackList(_mptDeviceStructPointer, GetProgressFunction(progressCallback)))
             {
                 foreach (var track in trackList)
                     yield return track;
@@ -179,7 +179,7 @@ namespace LibMtpSharp
             return newFolderId;
         }
 
-        public void SendFirmwareFile(FileInfo fileInfo, Action<double> progressCallback)
+        public void SendFirmwareFile(FileInfo fileInfo, Func<double, bool> progressCallback)
         {
             var firmwareFile = new FileStruct
             {
@@ -190,11 +190,7 @@ namespace LibMtpSharp
                 StorageId = 0
             };
             LibMtpLibrary.SendFile(_mptDeviceStructPointer, fileInfo.FullName, ref firmwareFile,
-                (sent, total, _) =>
-                {
-                    progressCallback((double)sent * 100 / total);
-                    return 0;
-                }, IntPtr.Zero);
+                GetProgressFunction(progressCallback), IntPtr.Zero);
         }
 
         public void DeleteObject(uint objectId)
@@ -233,6 +229,8 @@ namespace LibMtpSharp
         
         private ProgressFunction GetProgressFunction(Func<double, bool> progressCallback)
         {
+            if (progressCallback == null)
+                return null;
             return (sent, total, _) =>
             {
                 double progress = (double)sent / total;
