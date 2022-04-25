@@ -239,7 +239,7 @@ namespace LibMtpSharp
                 throw new ApplicationException($"Failed to delete the object with it {objectId}");
         }
 
-        private MtpDataGetFunction GetDataFunction(Func<int, IList<byte>> getData)
+        private MtpDataGetFunction GetDataFunction(Func<int, IList<byte>?> getData)
         {
             return (IntPtr _, IntPtr _, uint wantlen, IntPtr data, out uint gotlen) =>
             {
