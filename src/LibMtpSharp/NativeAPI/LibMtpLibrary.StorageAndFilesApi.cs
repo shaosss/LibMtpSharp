@@ -131,10 +131,10 @@ namespace LibMtpSharp.NativeAPI
         /// is to recursively delete all files (and folders) contained in the folder, then the folder itself.
         /// </summary>
         /// <param name="device">a pointer to the device to delete the object from</param>
-        /// <param name="object_id">the object to delete</param>
+        /// <param name="objectId">the object to delete</param>
         /// <returns>0 on success, any other value means failure.</returns>
         [DllImport(LibMtpName)]
-        private static extern int LIBMTP_Delete_Object(IntPtr device, uint object_id);
+        private static extern int LIBMTP_Delete_Object(IntPtr device, uint objectId);
         
         public static int DeleteObject(IntPtr device, uint objectId)
         {
