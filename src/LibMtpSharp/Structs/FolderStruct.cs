@@ -12,7 +12,7 @@ namespace LibMtpSharp.Structs
         /// <summary>
         /// Unique folder ID
         /// </summary>
-        public uint FoldeId;
+        public uint FolderId;
         
         /// <summary>
         /// ID of parent folder
