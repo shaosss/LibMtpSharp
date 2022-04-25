@@ -125,7 +125,7 @@ namespace LibMtpSharp
             }
         }
         
-        public IEnumerable<TrackStruct> GetTrackList(Func<double, bool> progressCallback)
+        public IEnumerable<TrackStruct> GetTrackList(Func<double, bool>? progressCallback)
         {
             using (var trackList = new TrackList(_mptDeviceStructPointer, GetProgressFunction(progressCallback)))
             {
@@ -169,7 +169,7 @@ namespace LibMtpSharp
         /// <param name="progressCallback">Reports a progress and returns boolean indication if the operation was cancelled</param>
         /// <exception cref="Exception"></exception>
         public void SendTrack(ref TrackStruct track, Func<int, IList<byte>> dataProvider,
-            Func<double, bool> progressCallback)
+            Func<double, bool>? progressCallback)
         {
             var result = LibMtpLibrary.SendTrackFromHandler(_mptDeviceStructPointer, GetDataFunction(dataProvider), 
                 ref track, GetProgressFunction(progressCallback));
@@ -219,7 +219,7 @@ namespace LibMtpSharp
                 }
         }
 
-        public void SendFirmwareFile(FileInfo fileInfo, Func<double, bool> progressCallback)
+        public void SendFirmwareFile(FileInfo fileInfo, Func<double, bool>? progressCallback)
         {
             var firmwareFile = new FileStruct
             {
