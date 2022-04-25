@@ -205,5 +205,24 @@ namespace LibMtpSharp.NativeAPI
         {
             return LIBMTP_Get_Filelisting_With_Callback(device, callback, IntPtr.Zero);
         }
+
+        /// <summary>
+        /// This gets a file off the device to a local file identified by a filename.
+        /// </summary>
+        /// <param name="device">a pointer to the device to get the track from.</param>
+        /// <param name="id">the file ID of the file to retrieve.</param>
+        /// <param name="path">a filename to use for the retrieved file.</param>
+        /// <param name="progressCallback">a progress indicator function or NULL to ignore.</param>
+        /// <param name="data">a user-defined pointer that is passed along to the <code>progress</code> function
+        /// in order to pass along some user defined data to the progress updates. If not used, set this to NULL.</param>
+        /// <returns>0 if the transfer was successful, any other value means failure.</returns>
+        [DllImport(LibMtpName)]
+        private static extern int LIBMTP_Get_File_To_File(IntPtr device, uint id,
+            [MarshalAs(UnmanagedType.LPUTF8Str)] string path, ProgressFunction? progressCallback, IntPtr data);
+        
+        public static int GetFileToFile(IntPtr device, uint id, string filePath, ProgressFunction? progressCallback)
+        {
+            return LIBMTP_Get_File_To_File(device, id, filePath, progressCallback, IntPtr.Zero);
+        }
     }
 }

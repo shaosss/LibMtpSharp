@@ -174,7 +174,22 @@ namespace LibMtpSharp
             var result = LibMtpLibrary.SendTrackFromHandler(_mptDeviceStructPointer, GetDataFunction(dataProvider), 
                 ref track, GetProgressFunction(progressCallback));
             if (result != 0)
-                throw new Exception("Sending file failed");
+                throw new ApplicationException("Sending file failed");
+        }
+
+        /// <summary>
+        /// Gets file with specified id to the file on specified path
+        /// </summary>
+        /// <param name="fileId">id of the file to retrieve</param>
+        /// <param name="filePath">file path where to write</param>
+        /// <param name="progressCallback">callback for progress reporting</param>
+        /// <exception cref="ApplicationException">throws exception if getting the file failed</exception>
+        public void GetFile(uint fileId, string filePath, Func<double, bool>? progressCallback)
+        {
+            var result = LibMtpLibrary.GetFileToFile(_mptDeviceStructPointer, fileId, filePath,
+                GetProgressFunction(progressCallback));
+            if (result != 0)
+                throw new ApplicationException($"Getting file Id: {fileId} to {filePath} failed");
         }
 
         public void CreateAlbum(ref AlbumStruct albumStruct)
