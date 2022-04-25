@@ -102,9 +102,9 @@ namespace LibMtpSharp.NativeAPI
 
         [DllImport(LibMtpName)]
         private static extern int LIBMTP_Send_File_From_File(IntPtr device, [MarshalAs(UnmanagedType.LPUTF8Str)] string path,
-            ref FileStruct filedata, ProgressFunction callback, IntPtr data);
+            ref FileStruct filedata, ProgressFunction? callback, IntPtr data);
 
-        public static int SendFile(IntPtr device, string path, ref FileStruct fileData, ProgressFunction callback,
+        public static int SendFile(IntPtr device, string path, ref FileStruct fileData, ProgressFunction? callback,
             IntPtr data)
         {
             return LIBMTP_Send_File_From_File(device, path, ref fileData, callback, data);
@@ -198,10 +198,10 @@ namespace LibMtpSharp.NativeAPI
         /// <code>LIBMTP_file_t</code> data structure. Each of the metadata tags must be freed after use, and may
         /// contain only partial metadata information, i.e. one or several fields may be NULL or 0.</returns>
         [DllImport(LibMtpName)]
-        private static extern IntPtr LIBMTP_Get_Filelisting_With_Callback(IntPtr device, ProgressFunction callback,
+        private static extern IntPtr LIBMTP_Get_Filelisting_With_Callback(IntPtr device, ProgressFunction? callback,
             IntPtr data);
 
-        public static IntPtr GetFilelistingWithCallback(IntPtr device, ProgressFunction callback)
+        public static IntPtr GetFilelistingWithCallback(IntPtr device, ProgressFunction? callback)
         {
             return LIBMTP_Get_Filelisting_With_Callback(device, callback, IntPtr.Zero);
         }

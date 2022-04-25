@@ -71,7 +71,7 @@ namespace LibMtpSharp.NativeAPI
         [DllImport(LibMtpName)]
         private static extern IntPtr LIBMTP_Get_Manufacturername(IntPtr mtpDeviceStructPointer);
         
-        public static string GetManufacturerName(IntPtr openedMtpDevice)
+        public static string? GetManufacturerName(IntPtr openedMtpDevice)
         {
             var pointerToStr = LIBMTP_Get_Manufacturername(openedMtpDevice);
             var manufacturerName = Marshal.PtrToStringUTF8(pointerToStr);
@@ -90,7 +90,7 @@ namespace LibMtpSharp.NativeAPI
         [DllImport(LibMtpName)]
         private static extern IntPtr LIBMTP_Get_Modelname(IntPtr mtpDeviceStructPointer);
         
-        public static string GetModelName(IntPtr mtpDeviceStructPointer)
+        public static string? GetModelName(IntPtr mtpDeviceStructPointer)
         {
             var pointerToStr = LIBMTP_Get_Modelname(mtpDeviceStructPointer);
             var modelName = Marshal.PtrToStringUTF8(pointerToStr);
@@ -109,7 +109,7 @@ namespace LibMtpSharp.NativeAPI
         [DllImport(LibMtpName)]
         private static extern IntPtr LIBMTP_Get_Serialnumber(IntPtr mtpDeviceStructPointer);
 
-        public static string GetSerialNumber(IntPtr mtpDeviceStructPointer)
+        public static string? GetSerialNumber(IntPtr mtpDeviceStructPointer)
         {
             var pointerToStr = LIBMTP_Get_Serialnumber(mtpDeviceStructPointer);
             var serialNumber = Marshal.PtrToStringUTF8(pointerToStr);
@@ -128,7 +128,7 @@ namespace LibMtpSharp.NativeAPI
         [DllImport(LibMtpName)]
         private static extern IntPtr LIBMTP_Get_Deviceversion(IntPtr mtpDeviceStructPointer);
 
-        public static string GetDeviceVersion(IntPtr mtpDeviceStructPointer)
+        public static string? GetDeviceVersion(IntPtr mtpDeviceStructPointer)
         {
             var pointerToStr = LIBMTP_Get_Deviceversion(mtpDeviceStructPointer);
             var deviceVersion = Marshal.PtrToStringUTF8(pointerToStr);
@@ -147,7 +147,7 @@ namespace LibMtpSharp.NativeAPI
         [DllImport(LibMtpName)]
         private static extern IntPtr LIBMTP_Get_Friendlyname(IntPtr mtpDeviceStructPointer);
 
-        public static string GetFriendlyName(IntPtr mtpDeviceStructPointer)
+        public static string? GetFriendlyName(IntPtr mtpDeviceStructPointer)
         {
             var pointerToStr = LIBMTP_Get_Friendlyname(mtpDeviceStructPointer);
             var friendlyName = Marshal.PtrToStringUTF8(pointerToStr);

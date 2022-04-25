@@ -26,32 +26,32 @@ namespace LibMtpSharp.Structs
         /// Track title
         /// </summary>
         [MarshalAs(UnmanagedType.LPUTF8Str)]
-        public string Title;
+        public string? Title;
         /// <summary>
         /// Name of recording artist
         /// </summary>
         [MarshalAs(UnmanagedType.LPUTF8Str)]
-        public string Artist;
+        public string? Artist;
         /// <summary>
         /// Name of recording composer
         /// </summary>
         [MarshalAs(UnmanagedType.LPUTF8Str)]
-        public string Composer;
+        public string? Composer;
         /// <summary>
         /// Genre name for track
         /// </summary>
         [MarshalAs(UnmanagedType.LPUTF8Str)]
-        public string Genre;
+        public string? Genre;
         /// <summary>
         /// Album name for track
         /// </summary>
         [MarshalAs(UnmanagedType.LPUTF8Str)]
-        public string Album;
+        public string? Album;
         /// <summary>
         /// Date of original recording as a string
         /// </summary>
         [MarshalAs(UnmanagedType.LPUTF8Str)]
-        public string Date;
+        public string? Date;
         /// <summary>
         /// Original filename of this track
         /// </summary>

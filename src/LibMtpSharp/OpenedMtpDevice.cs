@@ -24,27 +24,27 @@ namespace LibMtpSharp
                 throw new OpenDeviceException(rawDevice);
         }
 
-        public string GetManufacturerName()
+        public string? GetManufacturerName()
         {
             return LibMtpLibrary.GetManufacturerName(_mptDeviceStructPointer);
         }
 
-        public string GetModelName()
+        public string? GetModelName()
         {
             return LibMtpLibrary.GetModelName(_mptDeviceStructPointer);
         }
 
-        public string GetSerialNumber()
+        public string? GetSerialNumber()
         {
             return LibMtpLibrary.GetSerialNumber(_mptDeviceStructPointer);
         }
 
-        public string GetDeviceVersion()
+        public string? GetDeviceVersion()
         {
             return LibMtpLibrary.GetDeviceVersion(_mptDeviceStructPointer);
         }
 
-        public string GetFriendlyName()
+        public string? GetFriendlyName()
         {
             return LibMtpLibrary.GetFriendlyName(_mptDeviceStructPointer);
         }
@@ -105,7 +105,7 @@ namespace LibMtpSharp
             }
         }
 
-        public IEnumerable<FileStruct> GetFiles(Func<double, bool> progressCallback)
+        public IEnumerable<FileStruct> GetFiles(Func<double, bool>? progressCallback)
         {
             using (var fileList = new FileList(_mptDeviceStructPointer, GetProgressFunction(progressCallback)))
             {
@@ -252,7 +252,7 @@ namespace LibMtpSharp
             };
         }
         
-        private ProgressFunction GetProgressFunction(Func<double, bool> progressCallback)
+        private ProgressFunction? GetProgressFunction(Func<double, bool>? progressCallback)
         {
             if (progressCallback == null)
                 return null;

@@ -6,7 +6,7 @@ namespace LibMtpSharp.Lists;
 
 internal class FileList : UnmanagedList<FileStruct>
 {
-    public FileList(IntPtr mptDeviceStructPointer, ProgressFunction progressCallback) 
+    public FileList(IntPtr mptDeviceStructPointer, ProgressFunction? progressCallback) 
         : base(LibMtpLibrary.GetFilelistingWithCallback(mptDeviceStructPointer, progressCallback))
     {
     }

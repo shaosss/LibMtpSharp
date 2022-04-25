@@ -78,9 +78,9 @@ namespace LibMtpSharp.NativeAPI
         /// field of the <code>LIBMTP_track_t</code> data structure. Each of the metadata tags must be freed after use,
         /// and may contain only partial metadata information, i.e. one or several fields may be NULL or 0.</returns>
         [DllImport(LibMtpName)]
-        private static extern IntPtr LIBMTP_Get_Tracklisting_With_Callback(IntPtr mtpDeviceStructPointer, ProgressFunction callback, IntPtr data);
+        private static extern IntPtr LIBMTP_Get_Tracklisting_With_Callback(IntPtr mtpDeviceStructPointer, ProgressFunction? callback, IntPtr data);
         
-        public static IntPtr GetTracks(IntPtr mtpDeviceStructPointer, ProgressFunction progressCallback)
+        public static IntPtr GetTracks(IntPtr mtpDeviceStructPointer, ProgressFunction? progressCallback)
         {
             return LIBMTP_Get_Tracklisting_With_Callback(mtpDeviceStructPointer, progressCallback, IntPtr.Zero);
         }
@@ -111,10 +111,10 @@ namespace LibMtpSharp.NativeAPI
         /// <returns>0 if the transfer was successful, any other value means failure.</returns>
         [DllImport(LibMtpName)]
         private static extern int LIBMTP_Send_Track_From_Handler(IntPtr device, MtpDataGetFunction getFunc, IntPtr priv,
-            ref TrackStruct metadata, ProgressFunction callback, IntPtr data);
+            ref TrackStruct metadata, ProgressFunction? callback, IntPtr data);
 
         public static int SendTrackFromHandler(IntPtr device, MtpDataGetFunction getFunction, ref TrackStruct trackStruct, 
-            ProgressFunction progressFunction)
+            ProgressFunction? progressFunction)
         {
             return LIBMTP_Send_Track_From_Handler(device, getFunction, IntPtr.Zero, ref trackStruct, progressFunction,
                 IntPtr.Zero);

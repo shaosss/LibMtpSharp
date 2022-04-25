@@ -12,7 +12,7 @@ namespace LibMtpSharp.Structs
         /// The vendor of this device
         /// </summary>
         [MarshalAs(UnmanagedType.LPUTF8Str)]
-        public string Vendor;
+        public string? Vendor;
         
         /// <summary>
         ///  Vendor ID for this device
@@ -23,7 +23,7 @@ namespace LibMtpSharp.Structs
         /// The product name of this device
         /// </summary>
         [MarshalAs(UnmanagedType.LPUTF8Str)]
-        public string Product;
+        public string? Product;
         
         /// <summary>
         /// Product ID for this device

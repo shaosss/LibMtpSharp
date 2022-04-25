@@ -5,14 +5,14 @@ namespace LibMtpSharp.Structs;
 
 public struct AlbumStruct
 {
-    public uint AlbumId { get; set; }
-    public uint ParentId { get; set; }
-    public uint StorageId { get; set; }
-    public string Name { get; set; }
-    public string Artist { get; set; }
-    public string Composer { get; set; }
-    public string Genre { get; set; }
-    public uint[] Tracks { get; set; }
+    public uint AlbumId { get; set; } = 0;
+    public uint ParentId { get; set; } = 0;
+    public uint StorageId { get; set; } = 0;
+    public string? Name { get; set; } = null;
+    public string? Artist { get; set; } = null;
+    public string? Composer { get; set; } = null;
+    public string? Genre { get; set; } = null;
+    public uint[] Tracks { get; set; } = null!;
 
     internal AlbumStruct(AlbumNativeStruct albumNativeStruct) : this()
     {

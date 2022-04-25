@@ -13,6 +13,7 @@
         <PackageReleaseNotes>License update
 Repository address fix</PackageReleaseNotes>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>

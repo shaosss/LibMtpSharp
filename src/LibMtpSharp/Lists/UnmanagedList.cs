@@ -22,7 +22,7 @@ namespace LibMtpSharp.Lists
             var currentItem = _listPtr;
             while (currentItem != IntPtr.Zero)
             {
-                var currentItemStruct = Marshal.PtrToStructure<T>(currentItem);
+                var currentItemStruct = Marshal.PtrToStructure<T>(currentItem)!;
                 yield return currentItemStruct;
                 currentItem = GetPointerToNextItem(ref currentItemStruct);
             }
@@ -38,7 +38,7 @@ namespace LibMtpSharp.Lists
             var currentItem = _listPtr;
             while (currentItem != IntPtr.Zero)
             {
-                var currentItemStruct = Marshal.PtrToStructure<T>(currentItem);
+                var currentItemStruct = Marshal.PtrToStructure<T>(currentItem)!;
                 FreeItem(currentItem);
                 currentItem = GetPointerToNextItem(ref currentItemStruct);
             }
