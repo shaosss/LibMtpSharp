@@ -1,32 +1,69 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using LibMtpSharp.NativeAPI;
 using LibMtpSharp.Structs;
 
 namespace LibMtpSharp.Lists;
 
-internal class FolderList : UnmanagedList<FolderStruct>
+internal class FolderList : IEnumerable<FolderStruct>, IDisposable
 {
-    private bool _treeWasFreed = false;
-    
-    public FolderList(IntPtr mptDeviceStructPointer, uint? storageId = null) 
-        : base(storageId == null 
+    private readonly IntPtr _listPtr;
+
+    public FolderList(IntPtr mptDeviceStructPointer, uint? storageId = null)
+    {
+        _listPtr = storageId == null 
             ? LibMtpLibrary.GetFolderList(mptDeviceStructPointer) 
-            : LibMtpLibrary.GetFolderListForStorage(mptDeviceStructPointer, storageId.Value))
+            : LibMtpLibrary.GetFolderListForStorage(mptDeviceStructPointer, storageId.Value);
+    }
+    
+    IEnumerator IEnumerable.GetEnumerator()
     {
+        return GetEnumerator();
     }
 
-    protected override IntPtr GetPointerToNextItem(ref FolderStruct item)
+    public IEnumerator<FolderStruct> GetEnumerator()
     {
-        if (_treeWasFreed)
-            return IntPtr.Zero;
-        if (item.sibling != IntPtr.Zero)
-            return item.sibling;
-        return item.child;
+        var currentItem = _listPtr;
+        if (currentItem != IntPtr.Zero)
+        {
+            foreach (var folder in EnumerateFolderTreeStartingFrom(_listPtr))
+                yield return folder;
+        }
     }
 
-    protected override void FreeItem(IntPtr item)
+    private IEnumerable<FolderStruct> EnumerateFolderTreeStartingFrom(IntPtr folderPtr)
     {
-        _treeWasFreed = true;
-        LibMtpLibrary.DestroyFolder(item);
+        var folder = Marshal.PtrToStructure<FolderStruct>(folderPtr);
+        yield return folder;
+        if (folder.Child != IntPtr.Zero)
+        {
+            foreach (var childFolder in EnumerateFolderTreeStartingFrom(folder.Child))
+                yield return childFolder;
+        }
+
+        if (folder.Sibling != IntPtr.Zero)
+        {
+            foreach (var siblingFolder in EnumerateFolderTreeStartingFrom(folder.Sibling))
+                yield return siblingFolder;
+        }
+    }
+
+    private void ReleaseUnmanagedResources()
+    {
+        if (_listPtr != IntPtr.Zero)
+            LibMtpLibrary.DestroyFolder(_listPtr);
+    }
+
+    public void Dispose()
+    {
+        ReleaseUnmanagedResources();
+        GC.SuppressFinalize(this);
+    }
+        
+    ~FolderList()
+    {
+        ReleaseUnmanagedResources();
     }
 }
