@@ -17,7 +17,7 @@ namespace LibMtpSharp.Lists
 
         protected override void FreeItem(IntPtr item)
         {
-            NativeAPI.LibMtpLibrary.FreeFile(item);
+            NativeAPI.LibMtpLibrary.DestroyFile(item);
         }
     }
 }

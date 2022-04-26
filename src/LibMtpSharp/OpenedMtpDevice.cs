@@ -13,36 +13,38 @@ namespace LibMtpSharp
     public class OpenedMtpDevice : IDisposable
     {
         private readonly IntPtr _mptDeviceStructPointer;
+        private readonly bool _cached;
 
         public OpenedMtpDevice(ref RawDevice rawDevice, bool cached)
         {
-            _mptDeviceStructPointer = cached ? LibMtpLibrary.OpenRawDevice(ref rawDevice) 
+            _cached = cached;
+            _mptDeviceStructPointer = _cached ? LibMtpLibrary.OpenRawDevice(ref rawDevice) 
                 : LibMtpLibrary.OpenRawDeviceUncached(ref rawDevice);
             if (_mptDeviceStructPointer == IntPtr.Zero)
                 throw new OpenDeviceException(rawDevice);
         }
 
-        public string GetManufacturerName()
+        public string? GetManufacturerName()
         {
             return LibMtpLibrary.GetManufacturerName(_mptDeviceStructPointer);
         }
 
-        public string GetModelName()
+        public string? GetModelName()
         {
             return LibMtpLibrary.GetModelName(_mptDeviceStructPointer);
         }
 
-        public string GetSerialNumber()
+        public string? GetSerialNumber()
         {
             return LibMtpLibrary.GetSerialNumber(_mptDeviceStructPointer);
         }
 
-        public string GetDeviceVersion()
+        public string? GetDeviceVersion()
         {
             return LibMtpLibrary.GetDeviceVersion(_mptDeviceStructPointer);
         }
 
-        public string GetFriendlyName()
+        public string? GetFriendlyName()
         {
             return LibMtpLibrary.GetFriendlyName(_mptDeviceStructPointer);
         }
@@ -92,11 +94,25 @@ namespace LibMtpSharp
         
         public IEnumerable<FileStruct> GetFolderContent(uint storageId, uint? folderId)
         {
+            if (_cached)
+                throw new ApplicationException(
+                    "GetFolderContent cannot be called on cached device. Open device with cached: false");
             using (var fileList = new FileAndFolderList(_mptDeviceStructPointer, storageId, 
                        folderId ?? LibMtpLibrary.LibmtpFilesAndFoldersRoot))
             {
                 foreach (var file in fileList)
                     yield return file;
+            }
+        }
+
+        public IEnumerable<FileStruct> GetFiles(Func<double, bool>? progressCallback)
+        {
+            using (var fileList = new FileList(_mptDeviceStructPointer, GetProgressFunction(progressCallback)))
+            {
+                foreach (var file in fileList)
+                {
+                    yield return file;
+                }
             }
         }
 
@@ -109,9 +125,9 @@ namespace LibMtpSharp
             }
         }
         
-        public IEnumerable<TrackStruct> GetTrackList()
+        public IEnumerable<TrackStruct> GetTrackList(Func<double, bool>? progressCallback)
         {
-            using (var trackList = new TrackList(_mptDeviceStructPointer))
+            using (var trackList = new TrackList(_mptDeviceStructPointer, GetProgressFunction(progressCallback)))
             {
                 foreach (var track in trackList)
                     yield return track;
@@ -153,12 +169,27 @@ namespace LibMtpSharp
         /// <param name="progressCallback">Reports a progress and returns boolean indication if the operation was cancelled</param>
         /// <exception cref="Exception"></exception>
         public void SendTrack(ref TrackStruct track, Func<int, IList<byte>> dataProvider,
-            Func<double, bool> progressCallback)
+            Func<double, bool>? progressCallback)
         {
             var result = LibMtpLibrary.SendTrackFromHandler(_mptDeviceStructPointer, GetDataFunction(dataProvider), 
                 ref track, GetProgressFunction(progressCallback));
             if (result != 0)
-                throw new Exception("Sending file failed");
+                throw new ApplicationException("Sending file failed");
+        }
+
+        /// <summary>
+        /// Gets file with specified id to the file on specified path
+        /// </summary>
+        /// <param name="fileId">id of the file to retrieve</param>
+        /// <param name="filePath">file path where to write</param>
+        /// <param name="progressCallback">callback for progress reporting</param>
+        /// <exception cref="ApplicationException">throws exception if getting the file failed</exception>
+        public void GetFile(uint fileId, string filePath, Func<double, bool>? progressCallback)
+        {
+            var result = LibMtpLibrary.GetFileToFile(_mptDeviceStructPointer, fileId, filePath,
+                GetProgressFunction(progressCallback));
+            if (result != 0)
+                throw new ApplicationException($"Getting file Id: {fileId} to {filePath} failed");
         }
 
         public void CreateAlbum(ref AlbumStruct albumStruct)
@@ -179,7 +210,16 @@ namespace LibMtpSharp
             return newFolderId;
         }
 
-        public void SendFirmwareFile(FileInfo fileInfo, Action<double> progressCallback)
+        public IEnumerable<FolderStruct> GetFolderList(uint? storageId = null)
+        {
+            using (var folderList = new FolderList(_mptDeviceStructPointer, storageId))
+                foreach (var folder in folderList)
+                {
+                    yield return folder;
+                }
+        }
+
+        public void SendFirmwareFile(FileInfo fileInfo, Func<double, bool>? progressCallback)
         {
             var firmwareFile = new FileStruct
             {
@@ -190,11 +230,7 @@ namespace LibMtpSharp
                 StorageId = 0
             };
             LibMtpLibrary.SendFile(_mptDeviceStructPointer, fileInfo.FullName, ref firmwareFile,
-                (sent, total, _) =>
-                {
-                    progressCallback((double)sent * 100 / total);
-                    return 0;
-                }, IntPtr.Zero);
+                GetProgressFunction(progressCallback), IntPtr.Zero);
         }
 
         public void DeleteObject(uint objectId)
@@ -202,8 +238,8 @@ namespace LibMtpSharp
             if (0 != LibMtpLibrary.DeleteObject(_mptDeviceStructPointer, objectId)) 
                 throw new ApplicationException($"Failed to delete the object with it {objectId}");
         }
-        
-        private MtpDataGetFunction GetDataFunction(Func<int, IList<byte>> getData)
+
+        private MtpDataGetFunction GetDataFunction(Func<int, IList<byte>?> getData)
         {
             return (IntPtr _, IntPtr _, uint wantlen, IntPtr data, out uint gotlen) =>
             {
@@ -231,8 +267,10 @@ namespace LibMtpSharp
             };
         }
         
-        private ProgressFunction GetProgressFunction(Func<double, bool> progressCallback)
+        private ProgressFunction? GetProgressFunction(Func<double, bool>? progressCallback)
         {
+            if (progressCallback == null)
+                return null;
             return (sent, total, _) =>
             {
                 double progress = (double)sent / total;

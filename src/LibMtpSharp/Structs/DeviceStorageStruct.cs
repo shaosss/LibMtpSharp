@@ -48,7 +48,7 @@ namespace LibMtpSharp.Structs
         /// A brief description of this storage
         /// </summary>
         [MarshalAs(UnmanagedType.LPUTF8Str)]
-        public string StorageDescription;
+        public string? StorageDescription;
         
         /// <summary>
         /// A volume identifier

@@ -22,22 +22,22 @@ namespace LibMtpSharp.Structs
         /// Name of album
         /// </summary>
         [MarshalAs(UnmanagedType.LPUTF8Str)]
-        public string name;
+        public string? name;
         /// <summary>
         /// Name of album artist
         /// </summary>
         [MarshalAs(UnmanagedType.LPUTF8Str)]
-        public string artist; 
+        public string? artist; 
         /// <summary>
         /// Name of recording composer
         /// </summary>
         [MarshalAs(UnmanagedType.LPUTF8Str)]
-        public string composer;
+        public string? composer;
         /// <summary>
         ///  Genre of album
         /// </summary>
         [MarshalAs(UnmanagedType.LPUTF8Str)]
-        public string genre;
+        public string? genre;
         /// <summary>
         /// The tracks in this album
         /// </summary>

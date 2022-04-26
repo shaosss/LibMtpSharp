@@ -11,7 +11,7 @@ namespace LibMtpSharp.Structs
         public uint Width { get; set; }
         public uint Height { get; set; }
         public uint Duration { get; set; }
-        public byte[] Data { get; set; }
+        public byte[]? Data { get; set; }
 
         internal FileSampleDataStruct(IntPtr devicePtr, uint objectId)
         {
@@ -37,7 +37,7 @@ namespace LibMtpSharp.Structs
                     var insideBlockOffset = (int)(i % int.MaxValue);
                     if (insideBlockOffset == 0 && i != 0)
                         dataPtr = IntPtr.Add(dataPtr, int.MaxValue);
-                    Data[i] = Marshal.ReadByte(dataPtr, insideBlockOffset);
+                    Data![i] = Marshal.ReadByte(dataPtr, insideBlockOffset);
                 }
             }
             finally
@@ -52,6 +52,7 @@ namespace LibMtpSharp.Structs
             try
             {
                 IntPtr dataPtr = handle.AddrOfPinnedObject();
+                var size = Data?.Length ?? 0;
                 var fileSampleData = new FileSampleDataNativeStruct()
                 {
                     filetype = FileType,
@@ -59,7 +60,7 @@ namespace LibMtpSharp.Structs
                     width = Width,
                     duration = Duration,
                     data = dataPtr,
-                    size = (ulong)Data.Length
+                    size = (ulong)size
                 };
                 LibMtpLibrary.SendRepresentativeSample(mptDeviceStructPointer, objectId, ref fileSampleData);
             }

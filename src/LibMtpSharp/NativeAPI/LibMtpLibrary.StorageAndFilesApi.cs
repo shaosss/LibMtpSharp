@@ -102,9 +102,9 @@ namespace LibMtpSharp.NativeAPI
 
         [DllImport(LibMtpName)]
         private static extern int LIBMTP_Send_File_From_File(IntPtr device, [MarshalAs(UnmanagedType.LPUTF8Str)] string path,
-            ref FileStruct filedata, ProgressFunction callback, IntPtr data);
+            ref FileStruct filedata, ProgressFunction? callback, IntPtr data);
 
-        public static int SendFile(IntPtr device, string path, ref FileStruct fileData, ProgressFunction callback,
+        public static int SendFile(IntPtr device, string path, ref FileStruct fileData, ProgressFunction? callback,
             IntPtr data)
         {
             return LIBMTP_Send_File_From_File(device, path, ref fileData, callback, data);
@@ -118,7 +118,7 @@ namespace LibMtpSharp.NativeAPI
         [DllImport(LibMtpName)]
         private static extern void LIBMTP_destroy_file_t(IntPtr file);
 
-        public static void FreeFile(IntPtr fileStructPointer)
+        public static void DestroyFile(IntPtr fileStructPointer)
         {
             LIBMTP_destroy_file_t(fileStructPointer);
         }
@@ -131,14 +131,98 @@ namespace LibMtpSharp.NativeAPI
         /// is to recursively delete all files (and folders) contained in the folder, then the folder itself.
         /// </summary>
         /// <param name="device">a pointer to the device to delete the object from</param>
-        /// <param name="object_id">the object to delete</param>
+        /// <param name="objectId">the object to delete</param>
         /// <returns>0 on success, any other value means failure.</returns>
         [DllImport(LibMtpName)]
-        private static extern int LIBMTP_Delete_Object(IntPtr device, uint object_id);
+        private static extern int LIBMTP_Delete_Object(IntPtr device, uint objectId);
         
         public static int DeleteObject(IntPtr device, uint objectId)
         {
             return LIBMTP_Delete_Object(device, objectId);
+        }
+        
+        /// <summary>
+        /// This returns a list of all folders available on the current MTP device.
+        /// </summary>
+        /// <param name="device">a pointer to the device to get the folder listing for.</param>
+        /// <param name="storage">a storage ID to get the folder list from</param>
+        /// <returns>a list of folders</returns>
+        [DllImport(LibMtpName)]
+        private static extern IntPtr LIBMTP_Get_Folder_List_For_Storage(IntPtr device, uint storage);
+        
+        public static IntPtr GetFolderListForStorage(IntPtr device, uint storageId)
+        {
+            return LIBMTP_Get_Folder_List_For_Storage(device, storageId);
+        }
+        
+        /// <summary>
+        /// This returns a list of all folders available on the current MTP device.
+        /// </summary>
+        /// <param name="device">a pointer to the device to get the folder listing for.</param>
+        /// <returns>a list of folders</returns>
+        [DllImport(LibMtpName)]
+        private static extern IntPtr LIBMTP_Get_Folder_List(IntPtr device);
+        
+        public static IntPtr GetFolderList(IntPtr device)
+        {
+            return LIBMTP_Get_Folder_List(device);
+        }
+
+        /// <summary>
+        /// This recursively deletes the memory for a folder structure.
+        /// This shall typically be called on a top-level folder list to detsroy the entire folder tree.
+        /// </summary>
+        /// <param name="folder">folder structure to destroy</param>
+        [DllImport(LibMtpName)]
+        private static extern void LIBMTP_destroy_folder_t(IntPtr folder);
+        
+        public static void DestroyFolder(IntPtr folder)
+        {
+            LIBMTP_destroy_folder_t(folder);
+        }
+
+        /// <summary>
+        /// This returns a long list of all files available on the current MTP device.
+        /// Folders will not be returned, but abstract entities like playlists and albums will show up as "files".
+        /// If you want to group your file listing by storage (per storage unit) or arrange files into folders,
+        /// you must dereference the <code>storage_id</code> and/or <code>parent_id</code> field of the returned
+        /// <code>LIBMTP_file_t</code> struct. To arrange by folders or files you typically have to create the proper
+        /// trees by calls to <code>LIBMTP_Get_Storage()</code> and/or <code>LIBMTP_Get_Folder_List()</code> first.
+        /// </summary>
+        /// <param name="device">a pointer to the device to get the file listing for.</param>
+        /// <param name="callback">a function to be called during the tracklisting retrieveal for displaying progress
+        /// bars etc, or NULL if you don't want any callbacks.</param>
+        /// <param name="data">a user-defined pointer that is passed along to the <code>progress</code> function
+        /// in order to pass along some user defined data to the progress updates. If not used, set this to NULL.</param>
+        /// <returns>a list of files that can be followed using the <code>next</code> field of the
+        /// <code>LIBMTP_file_t</code> data structure. Each of the metadata tags must be freed after use, and may
+        /// contain only partial metadata information, i.e. one or several fields may be NULL or 0.</returns>
+        [DllImport(LibMtpName)]
+        private static extern IntPtr LIBMTP_Get_Filelisting_With_Callback(IntPtr device, ProgressFunction? callback,
+            IntPtr data);
+
+        public static IntPtr GetFilelistingWithCallback(IntPtr device, ProgressFunction? callback)
+        {
+            return LIBMTP_Get_Filelisting_With_Callback(device, callback, IntPtr.Zero);
+        }
+
+        /// <summary>
+        /// This gets a file off the device to a local file identified by a filename.
+        /// </summary>
+        /// <param name="device">a pointer to the device to get the track from.</param>
+        /// <param name="id">the file ID of the file to retrieve.</param>
+        /// <param name="path">a filename to use for the retrieved file.</param>
+        /// <param name="progressCallback">a progress indicator function or NULL to ignore.</param>
+        /// <param name="data">a user-defined pointer that is passed along to the <code>progress</code> function
+        /// in order to pass along some user defined data to the progress updates. If not used, set this to NULL.</param>
+        /// <returns>0 if the transfer was successful, any other value means failure.</returns>
+        [DllImport(LibMtpName)]
+        private static extern int LIBMTP_Get_File_To_File(IntPtr device, uint id,
+            [MarshalAs(UnmanagedType.LPUTF8Str)] string path, ProgressFunction? progressCallback, IntPtr data);
+        
+        public static int GetFileToFile(IntPtr device, uint id, string filePath, ProgressFunction? progressCallback)
+        {
+            return LIBMTP_Get_File_To_File(device, id, filePath, progressCallback, IntPtr.Zero);
         }
     }
 }

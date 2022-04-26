@@ -4,15 +4,22 @@
         <TargetFramework>net6.0</TargetFramework>
         <RootNamespace>LibMtpSharp</RootNamespace>
         <LangVersion>default</LangVersion>
-        <PackageVersion>0.1.1</PackageVersion>
+        <PackageVersion>0.1.2</PackageVersion>
         <Authors>Alexandr Shevchenko</Authors>
         <Description>The wrapper of LibMtp library. Don't forget to add package with native dependencies</Description>
         <Copyright>Copyright ©2022 Alexandr Shevchenko</Copyright>
         <PackageProjectUrl>https://github.com/shaosss/libMtpSharp</PackageProjectUrl>
         <PackageTags>MTP MTPZ</PackageTags>
-        <PackageReleaseNotes>License update
-Repository address fix</PackageReleaseNotes>
+        <PackageReleaseNotes>Consolidate progress callback for the existing calls
+Implement retrieval of the Folder list
+Throw exception for FileAndFolder list limitation
+Implement file list retrieval for cached devices
+Introduce nullable reference types support
+Implement getting file to the path
+Minor code improvements</PackageReleaseNotes>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Nullable>enable</Nullable>
+        <Title>LibMtpSharp</Title>
     </PropertyGroup>
 
     <ItemGroup>
