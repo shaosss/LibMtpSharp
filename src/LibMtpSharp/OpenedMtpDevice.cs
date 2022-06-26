@@ -187,8 +187,14 @@ namespace LibMtpSharp
         /// <exception cref="ApplicationException">throws exception if getting the file failed</exception>
         public void GetFile(uint fileId, string filePath, Func<double, bool>? progressCallback)
         {
-            var result = LibMtpLibrary.GetFileToFile(_mptDeviceStructPointer, fileId, filePath,
-                GetProgressFunction(progressCallback));
+            var file = File.Create(filePath);
+            var result = LibMtpLibrary.GetFileToHandler(_mptDeviceStructPointer, fileId, PutDataFunction(
+                d =>
+                {
+                    file.Write(d);
+                    return false;
+                }), GetProgressFunction(progressCallback));
+            file.Close();
             if (result != 0)
                 throw new ApplicationException($"Getting file Id: {fileId} to {filePath} failed");
         }
@@ -263,6 +269,24 @@ namespace LibMtpSharp
                     leftToRead -= readBytes.Count;
                     gotlen += (uint)readBytes.Count;
                 } while (leftToRead != 0);
+
+                return (ushort)HandlerReturn.Ok;
+            };
+        }
+        
+        private MtpDataPutFunction PutDataFunction(Func<byte[], bool> putData)
+        {
+            return (IntPtr _, IntPtr _, uint sendlen, IntPtr data, out uint gotlen) =>
+            {
+                gotlen = sendlen > Array.MaxLength ? (uint)Array.MaxLength : sendlen;
+                var readBytes = new byte[gotlen];
+                for (int i = 0; i < gotlen; i++)
+                {
+                    readBytes[i] = Marshal.ReadByte(data, i);
+                }
+
+                if (putData(readBytes))
+                    return (ushort)HandlerReturn.Cancel;
 
                 return (ushort)HandlerReturn.Ok;
             };
