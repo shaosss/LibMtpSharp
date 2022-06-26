@@ -49,9 +49,10 @@ namespace LibMtpSharp
             return LibMtpLibrary.GetFriendlyName(_mptDeviceStructPointer);
         }
         
-        public void SetFriendlyName(string value)
+        public void SetFriendlyName(string name)
         {
-            throw new NotSupportedException();
+            if (0 != LibMtpLibrary.SetFriendlyName(_mptDeviceStructPointer, name))
+                throw new ApplicationException($"Failed to set '{name}' device name");
         }
 
         public IEnumerable<FileTypeEnum> GetSupportedTypes()
