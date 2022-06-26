@@ -155,7 +155,22 @@ namespace LibMtpSharp.NativeAPI
                 LIBMTP_Free(pointerToStr);
             return friendlyName;
         }
+
+        /// <summary>
+        /// Sets the "friendly name" of an MTP device.
+        /// </summary>
+        /// <param name="mtpDeviceStructPointer">a pointer to the device to set the friendly name for.</param>
+        /// <param name="friendlyName">the new friendly name for the device.</param>
+        /// <returns>0 on success, any other value means failure.</returns>
+        [DllImport(LibMtpName)]
+        private static extern int LIBMTP_Set_Friendlyname(IntPtr mtpDeviceStructPointer, 
+            [MarshalAs(UnmanagedType.LPUTF8Str)] string friendlyName);
         
+        public static int SetFriendlyName(IntPtr mtpDeviceStructPointer, string friendlyName)
+        {
+            return LIBMTP_Set_Friendlyname(mtpDeviceStructPointer, friendlyName);
+        }
+
         /// <summary>
         ///  This function retrieves the current battery level on the device.
         /// </summary>

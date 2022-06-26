@@ -5,36 +5,6 @@ using LibMtpSharp.Structs;
 namespace LibMtpSharp.NativeAPI
 {
     /// <summary>
-    /// The callback type definition. Notice that a progress percentage ratio is easy to calculate by dividing
-    /// <code>sent</code> by <code>total</code>.
-    /// @param sent the number of bytes sent so far
-    /// @param total the total number of bytes to send
-    /// @param data a user-defined dereferencable pointer
-    /// @return if anything else than 0 is returned, the current transfer will be interrupted / cancelled.
-    /// </summary>
-    internal delegate int ProgressFunction(ulong sent, ulong total, IntPtr data);
-
-    /// <summary>
-    /// Callback function for get by handler function
-    /// params the device parameters
-    /// @param priv a user-defined dereferencable pointer
-    /// @param wantlen the number of bytes wanted
-    /// @param data a buffer to write the data to
-    /// @param gotlen pointer to the number of bytes actually written to data
-    /// @return LIBMTP_HANDLER_RETURN_OK if successful,
-    /// LIBMTP_HANDLER_RETURN_ERROR on error or LIBMTP_HANDLER_RETURN_CANCEL to cancel the transfer
-    /// </summary>
-    internal delegate ushort MtpDataGetFunction(IntPtr parameters, IntPtr priv,
-        uint wantlen, IntPtr data, out uint gotlen);
-        
-    internal enum HandlerReturn : ushort
-    { 
-        Ok = 0,
-        Error = 1,
-        Cancel = 2
-    }
-    
-    /// <summary>
     /// Media Items API.
     /// </summary>
     internal partial class LibMtpLibrary

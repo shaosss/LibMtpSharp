@@ -224,5 +224,25 @@ namespace LibMtpSharp.NativeAPI
         {
             return LIBMTP_Get_File_To_File(device, id, filePath, progressCallback, IntPtr.Zero);
         }
+
+        /// <summary>
+        /// This gets a file off the device and calls put_func with chunks of data
+        /// </summary>
+        /// <param name="device">a pointer to the device to get the file from.</param>
+        /// <param name="id">the file ID of the file to retrieve.</param>
+        /// <param name="put_func">the function to call when we have data.</param>
+        /// <param name="priv">the user-defined pointer that is passed to put_func</param>
+        /// <param name="callback">a progress indicator function or NULL to ignore.</param>
+        /// <param name="data">data a user-defined pointer that is passed along to the <code>progress</code>
+        /// function in order to pass along some user defined data to the progress updates. If not used, set this to NULL.</param>
+        /// <returns>if the transfer was successful, any other value means failure.</returns>
+        [DllImport(LibMtpName)]
+        private static extern int LIBMTP_Get_File_To_Handler(IntPtr device, uint id, MtpDataPutFunction put_func, IntPtr priv,
+            ProgressFunction? callback, IntPtr data);
+
+        public static int GetFileToHandler(IntPtr device, uint id, MtpDataPutFunction putFunc, ProgressFunction? callback)
+        {
+            return LIBMTP_Get_File_To_Handler(device, id, putFunc, IntPtr.Zero, callback, IntPtr.Zero);
+        }
     }
 }
